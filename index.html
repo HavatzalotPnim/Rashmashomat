@@ -1,0 +1,531 @@
+<head>
+<title>רשמ"שומט</title>
+<link rel="icon" href="https://i.imgur.com/wvNWXAH.png">
+<style>
+th { border: 5px solid black; text-align: center; width: 230px; height: 45px }
+td { border: 5px solid black; text-align: center; width: 230px; height: 45px }
+table { border: 5px solid black; border-collapse: collapse; margin: auto; font-size: 1.2em; position: relative }
+.timestamp { text-align: center; font-weight: bold }
+#copyArea { float: left; outline: 1.5px solid black; width: 300px; height: 200px; margin-left: 50px; overflow: hidden; position: relative; resize: none }
+</style>
+</head>
+
+<body dir="rtl" style="font-size: 1.5em; font-family: arial; background-image: url('https://i.imgur.com/5C2qctI.jpg')">
+<h1 style="text-align: center">ברוך הבא לרשמ"שומט!</h1>
+<br>
+<img src="https://i.imgur.com/wvNWXAH.png" style="display: block; margin-left: auto; margin-right: auto; position: relative; bottom: 40px"></img>
+<br>
+<div style="position: relative; bottom: 280px">
+<textarea id="copyArea" readonly style="display: none"></textarea>
+הכנס קובץ של מערכת שעות השמירה: 
+<input type="file" id="guardSchedule" value="/home/alon/Downloads/טיוטה לרשמש - משחק של רשמשומט.csv">
+<br><br>
+הכנס קובץ מיפוי שנה א':
+<input type="file" id="grade1Table">
+<br>
+הכנס קובץ מיפוי שנה ב':
+<input type="file" id="grade2Table">
+<br>
+הכנס קובץ מיפוי שנה ג':
+<input type="file" id="grade3Table">
+<br><br>
+<button id="button" style="font-size: 1.2em">אשר</button>
+<br>
+<table id="Rashmash" border=1 style="display: none">
+<tr id="row0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
+<tr id="row1"><td class="timestamp" style="background-color: #d9d9d9">00:00-02:00</td></tr>
+<tr id="row2"><td class="timestamp">02:00-04:00</td></tr>
+<tr id="row3"><td class="timestamp" style="background-color: #d9d9d9">04:00-06:00</td></tr>
+<tr id="row4"><td class="timestamp">06:00-08:00</td></tr>
+<tr id="row5"><td class="timestamp" style="background-color: #d9d9d9">08:00-10:00</td></tr>
+<tr id="row6"><td class="timestamp">10:00-12:00</td></tr>
+<tr id="row7"><td class="timestamp" style="background-color: #d9d9d9">12:00-14:00</td></tr>
+<tr id="row8"><td class="timestamp">14:00-16:00</td></tr>
+<tr id="row9"><td class="timestamp" style="background-color: #d9d9d9">16:00-18:00</td></tr>
+<tr id="row10"><td class="timestamp">18:00-20:00</td></tr>
+<tr id="row11"><td class="timestamp" style="background-color: #d9d9d9">20:00-22:00</td></tr>
+<tr id="row12"><td class="timestamp">22:00-00:00</td></tr>
+<tr id="row13"><td class="timestamp" style="background-color: #d9d9d9">כונן יום</td></tr>
+<tr id="row14"><td class="timestamp">כונן לילה</td></tr>
+<tr id="row15"><td class="timestamp" style="background-color: #d9d9d9">קצינת"ו</td></tr>
+</table>
+</div>
+
+<script>
+function Hanich(fullName, grade, department, arabist, kamat, hoursUnable, hoursAble, justicePoints)
+{
+	this.fullName = fullName;
+	this.grade = grade;
+	this.department = department;
+	this.arabist = arabist;
+	this.kamat = kamat;
+	this.hasKept = false;
+	this.hoursUnable = hoursUnable;
+	this.hoursAble = hoursAble;
+	this.justicePoints = justicePoints;
+	
+	this.print = function() {
+		returnValue = "fullName: " + fullName + "\n";
+		returnValue += "grade: " + grade + "\n";
+		returnValue += "department: " + department + "\n";
+		returnValue += "arabist: " + arabist + "\n";
+		returnValue += "kamat: " + kamat + "\n";
+		returnValue += "hoursUnable: " + hoursUnable + "\n";
+		returnValue += "hoursAble: " + hoursAble + "\n";
+		returnValue += "justicePoints: " + justicePoints;
+		
+		return returnValue;
+	}
+}
+
+function gradeWeek(sun, mon, tue, wed, thu)
+{
+	this.schedules = [sun, mon, tue, wed, thu];
+}
+
+var gradeWeek3 = new gradeWeek(
+	[[], ["math", "econ"], ["arab"], [], ["math", "comp", "philo"], []],
+	[["econ", "comp", "philo"], ["econ", "comp"], [], [], [], []],
+	[[], [], ["math", "econ", "comp"], ["econ", "comp"], [], ["kamat"]],
+	[["philo", "math"], ["math"], ["econ", "math"], ["math", "comp", "econ"], [], ["philo", "math", "comp", "econ"]],
+	[["math", "econ"], [], ["math", "comp", "philo"], [], [], []]
+);
+var gradeWeek2 = new gradeWeek(
+	[[], [], ["arab"], ["comp", "econ"], [], []],
+	[[], [], ["math", "econ"], [], ["philo"], ["math", "philo"]],
+	[[], [], [], ["math", "philo", "comp"], ["math", "philo", "comp"], []],
+	[[], ["econ"], ["philo"], ["econ", "comp"], ["comp"], ["philo", "math", "comp", "econ"]],
+	[["math", "econ", "comp"], ["econ"], ["math", "philo", "comp"], ["comp", "philo", "econ"], [], []]
+);
+var gradeWeek1 = new gradeWeek(
+	[[], [], [], ["math", "econ"], [], ["math", "philo"]],
+	[["philo"], ["philo"], ["math", "econ"], ["comp"], [], []],
+	[["math", "philo", "econ"], ["philo"], [], ["math", "philo"], [], []],
+	[[], [], [], ["math"], [], ["philo", "math", "comp", "econ"]],
+	[["econ"], ["math", "econ", "philo"], [], ["philo", "math", "comp", "econ"], ["philo", "math", "comp", "econ"], ["philo", "math", "comp", "econ"]]
+);
+
+
+
+function grade(week, hanichList)
+{
+	this.week = week;
+	this.hanichList = hanichList;
+}
+
+grade3 = new grade(gradeWeek3, []);
+grade2 = new grade(gradeWeek2, []);
+grade1 = new grade(gradeWeek1, []);
+
+
+
+
+
+Rashmash = [[],[],[],[],[],[]];
+
+
+
+function readBlob(callback) {
+
+	var guardFiles = document.getElementById("guardSchedule").files;
+	var grade1Files = document.getElementById("grade1Table").files;
+	var grade2Files = document.getElementById("grade2Table").files;
+	var grade3Files = document.getElementById("grade3Table").files;
+	if (!(guardFiles.length && grade1Files.length && grade2Files.length && grade3Files.length))
+	{
+		alert("אנא הכנס את כל הקבצים");
+		return;
+	}
+
+	var guardFile = guardFiles[0];  // new File("/home/alon/Downloads/טיוטה לרשמש - משחק של רשמשומט.csv");
+	var grade1File = grade1Files[0]; // new File("/home/alon/Downloads/טיוטה - שנה ג'.csv");
+	var grade2File = grade2Files[0]; //  new File("/home/alon/Downloads/טיוטה - שנה ב.csv");
+	var grade3File = grade3Files[0]; // new File("/home/alon/Downloads/טיוטה - שנה א' (1).csv");
+
+	var reader = new FileReader();
+	
+	
+	var guardText;
+	var grade1Text;
+	var grade2Text;
+	var grade3Text;
+	
+	
+	var iLoaded = 0;
+
+	// If we use onloadend, we need to check the readyState.
+	reader.onloadend = function(evt) {
+		if (evt.target.readyState == FileReader.DONE) {
+			iLoaded++;
+			
+			switch(iLoaded) {
+			case 1:
+				guardText = evt.target.result;
+				reader.readAsText(grade1File);
+				break;
+			case 2:
+				grade1Text = evt.target.result;
+				reader.readAsText(grade2File);
+				break;
+			case 3:
+				grade2Text = evt.target.result;
+				reader.readAsText(grade3File);
+				break;
+			case 4:
+				grade3Text = evt.target.result;
+				callback(guardText, grade1Text, grade2Text, grade3Text);
+				break;
+			}
+		}
+	};
+
+	reader.readAsText(guardFile);
+}
+
+document.getElementById("button").addEventListener('click', function(event) {
+	if (event.target.tagName.toLowerCase() == 'button') readBlob(analyze);
+}, false);
+
+document.getElementById("copyArea").addEventListener('click', function() {
+	copyArea.select();
+	document.execCommand("copy");
+}, false);
+
+
+hours = [];
+days = [];
+
+function cells()
+{
+	this.cells = [];
+}
+
+function analyze(guardText, grade1Text, grade2Text, grade3Text)
+{
+	// Guard table
+	
+	guardText = guardText.replace(/יא/g, "3").replace(/יב/g, "2").replace(/יג/g, "1");
+	
+	days = [new cells(), new cells(), new cells(), new cells(), new cells(), new cells()];
+	
+	lines = guardText.split("\n");
+
+	
+	for(lineCounter = 0; lineCounter < 15; lineCounter++)
+	{
+		line = lines[lineCounter];	//
+		hours[lineCounter] = new cells();
+		hours[lineCounter].cells = line.split(",");
+//		hours[lineCounter].cells.splice(0, 4);	
+		for(j = 0; j < 6; j++)
+			days[j].cells[lineCounter] = hours[lineCounter].cells[j];
+	}
+	
+	// Grade tables
+	
+	grade1HanichList = [];
+	hanichLineList = grade1Text.split("\n");
+	for(i = 0; i < hanichLineList.length; i++)
+	{
+		hanichInfo = hanichLineList[i].split(",");
+		fullName = hanichInfo[0];
+		department = hanichInfo[1];
+		arabist = (hanichInfo[2] == 1);
+		hoursUnable = hanichInfo[4].split(" ");
+		hoursAble = hanichInfo[5].split(" ");
+		justicePoints = parseFloat(hanichInfo[6]);
+		
+		grade1HanichList[i] = new Hanich(fullName, 1, department, arabist, false, hoursUnable, hoursAble, justicePoints);
+	}
+	grade1.hanichList = grade1HanichList;
+	
+	grade2HanichList = [];
+	hanichLineList = grade2Text.split("\n");
+	for(i = 0; i < hanichLineList.length; i++)
+	{
+		hanichInfo = hanichLineList[i].split(",");
+		fullName = hanichInfo[0];
+		department = hanichInfo[1];
+		arabist = (hanichInfo[2] == 1);
+		hoursUnable = hanichInfo[4].split(" ");
+		hoursAble = hanichInfo[5].split(" ");
+		justicePoints = parseFloat(hanichInfo[6]);
+		
+		grade2HanichList[i] = new Hanich(fullName, 2, department, arabist, false, hoursUnable, hoursAble, justicePoints);
+	}
+	grade2.hanichList = grade2HanichList;
+	
+	grade3HanichList = [];
+	hanichLineList = grade3Text.split("\n");
+	hanichLineList.splice(3,1);
+	for(i = 0; i < hanichLineList.length; i++)
+	{
+		hanichInfo = hanichLineList[i].split(",");
+		fullName = hanichInfo[0];
+		department = hanichInfo[1];
+		arabist = (hanichInfo[2] == 1);
+		kamat = (hanichInfo[3] == 1);
+		hoursUnable = hanichInfo[4].split(" ");
+		hoursAble = hanichInfo[5].split(" ");
+		justicePoints = parseFloat(hanichInfo[6]);
+		
+		grade3HanichList[i] = new Hanich(fullName, 3, department, arabist, kamat, hoursUnable, hoursAble, justicePoints);
+	}
+	grade3.hanichList = grade3HanichList;
+	
+	sortHanichs();
+	
+	copyText = "";
+	
+	for(y = 0; y < 15; y++)
+	{
+		for(x = 0; x < 6; x++)
+		{
+			cell = document.createElement("td");
+			hanich = Rashmash[x][y];
+			if(hanich != undefined) {
+				cell.innerHTML = hanich.fullName;
+				switch(hanich.grade)
+				{
+				case 1:
+					color = "#ffff99";
+					break;
+				case 2:
+					color = "#8eaadb";
+					break;
+				case 3:
+					color = "#c55a11";
+					break;
+				}
+				cell.style = "background-color: " + color;
+				copyText += hanich.fullName;
+			}
+			row = document.getElementById("row" + (y + 1));
+			row.appendChild(cell);
+			
+			if(x != 5)	copyText += "	";
+		}
+		if(y != 14)	copyText += "&#13;&#10;";
+	}
+	
+	document.getElementById("copyArea").innerHTML = copyText;
+	
+	setInterval(tableAnimation, 1);
+	setInterval(copyAnimation, 1);
+	
+}
+
+animateI = 0;
+
+function tableAnimation()
+{
+	animateI++;
+	animateProg = animateI / 150;
+	if(animateProg > 1) animateProg = 1;
+	animate = (650 - (animateProg * animateProg * (3 - 2 * animateProg)) * 650);
+	
+	Rashmash = document.getElementById("Rashmash");
+	Rashmash.style = "top: " + animate + "px";
+}
+
+function copyAnimation()
+{
+	animateProg = animateI / 100;
+	if(animateProg > 1) animateProg = 1;
+	animate = (300 - (animateProg * animateProg * (3 - 2 * animateProg)) * 300) + 50;
+	
+	copy = document.getElementById("copyArea");
+	copy.style = "bottom: " + animate + "px";
+}
+
+
+
+function sortHanichs()
+{
+	earlyHours(1);
+	earlyHours(2);
+	earlyHours(0);
+	earlyHours(3);
+	
+	for(day = 1; day < 6; day++)
+		assignHanich(day, 4);
+	
+	for(day = 0; day < 5; day++)
+		for(hour = 5; hour < 13; hour++)
+			assignHanich(day, hour);
+	
+	for(day = 0; day < 4; day++)
+		for(hour = 13; hour < 15; hour++)
+			assignHanich(day, hour);
+}
+
+
+function setKeeper(hanich, day, hour)
+{
+	hanich.hasKept = true;
+	Rashmash[day][hour] = hanich;
+}
+
+
+
+function assignHanich(day, hour)
+{
+	hanichList = getGradeHanichs(day, hour);
+	hanichList = removeUnable(hanichList, day, hour);
+	hanichList = removeBusy(hanichList, day, hour);
+	setKeeper(getMinimumJustice(hanichList), day, hour);
+}
+
+function earlyHours(hour)
+{
+	for(day = 1; day < 6; day++)
+		setKeeper(getMinimumJustice(getGradeHanichs(day, hour)), day, hour);
+}
+
+
+
+function getGradeHanichs(day, hour)
+{
+	gradeNumber = days[day].cells[hour];
+	
+	var hanichList = [];
+	
+	switch(parseInt(gradeNumber))
+	{
+	case 1:
+		hanichList = grade1.hanichList;
+		break;
+	case 2:
+		hanichList = grade2.hanichList;
+		break;
+	case 3:
+		hanichList = grade3.hanichList;
+		break;
+	default:
+		console.error("Error: Missing grade number (at day: " + day + ", hour: " + hour + ")");
+		break;
+	}
+	
+	return hanichList;
+}
+
+
+function getMinimumJustice(hanichs)
+{
+	var minimum = hanichs[0].justicePoints;
+	var keeper = hanichs[0];
+
+	for(i = 0; i < hanichs.length; i++)
+	{
+		minimum = hanichs[i].justicePoints;
+		keeper = hanichs[i];
+		
+		if(!hanichs[i].hasKept)
+			break;
+	}
+
+	for(i = 0; i < hanichs.length; i++)
+	{
+		if(hanichs[i].justicePoints < minimum && !hanichs[i].hasKept)
+		{
+			minimum = hanichs[i].justicePoints;
+			keeper = hanichs[i];
+		}
+	}
+
+	return keeper;
+}
+
+
+function removeUnable(hanichs, day, hour)
+{
+	var hanichsLeft = [];
+	for(i = 0; i < hanichs.length; i++)
+	{
+		hanich = hanichs[i];
+		unables = hanich.hoursUnable;
+		var remove = false;
+		for(j = 0; j < unables.length; j++)
+		{
+			unable = unables[j];
+			dayUnable = translateDay(unable.substring(0, 3));
+			hourUnable = parseInt(unable.substring(3,5)) / 2;
+			if(dayUnable == day && hourUnable == hour) { remove = true; break; }
+		}
+		if(!remove) hanichsLeft.push(hanich);
+	}
+	return hanichsLeft;
+}
+
+
+function checkIfAble(hanich, day, hour)
+{
+	ables = hanich.hoursAble;
+	isAble = false;
+	for(i = 0; i < ables.length; i++)
+	{
+		able = ables[i];
+		dayAble = translateDay(unable.substring(0, 3));
+		hourAble = parseInt(unable.substring(3,5)) / 2;
+		if(dayAble == day && hourAble == hour) { isAble = true; break; }
+	}
+	return isAble;
+}
+
+
+function removeBusy(hanichs, day, hour)
+{
+	var nonBusy = [];
+	var hanichsLeft = [];
+	
+	if(day == 5 || hour > 9)
+		return hanichs;
+	else
+	{
+		switch(hanichs[0].grade)
+		{
+		case 1:
+			nonBusy = gradeWeek1.schedules[day][hour - 4];
+			break;
+		case 2:
+			nonBusy = gradeWeek2.schedules[day][hour - 4];
+			break;
+		case 3:
+			nonBusy = gradeWeek3.schedules[day][hour - 4];
+			break;
+		}
+	}
+	if(nonBusy.length == 0)	console.error("Error: Wrong placement of grades (at day: " + day + ", hour: " + hour + ")");
+	
+	for(k = 0; k < hanichs.length; k++)
+	{
+		hanich = hanichs[k];
+		for(j = 0; j < nonBusy.length; j++)
+		{
+			department = nonBusy[j];
+			if(hanich.department == department || (hanich.arabist && department == "arab") || (hanich.kamat && department == "kamat") || checkIfAble(hanich, day, hour))
+				hanichsLeft.push(hanich);
+		}
+	}
+	
+	return hanichsLeft;
+	
+}
+
+
+function translateDay(day)
+{
+	switch(day)
+	{
+	case "sun":	return 0;
+	case "mon":	return 1;
+	case "tue":	return 2;
+	case "wed":	return 3;
+	case "thu":	return 4;
+	default:	return 0;
+	}
+}
+
+</script>
+
+</body>
