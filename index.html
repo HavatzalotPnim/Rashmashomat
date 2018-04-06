@@ -137,10 +137,10 @@ function readBlob(callback) {
 		return;
 	}
 
-	var guardFile = guardFiles[0];  // new File("/home/alon/Downloads/טיוטה לרשמש - משחק של רשמשומט.csv");
-	var grade1File = grade1Files[0]; // new File("/home/alon/Downloads/טיוטה - שנה ג'.csv");
-	var grade2File = grade2Files[0]; //  new File("/home/alon/Downloads/טיוטה - שנה ב.csv");
-	var grade3File = grade3Files[0]; // new File("/home/alon/Downloads/טיוטה - שנה א' (1).csv");
+	var guardFile = guardFiles[0];
+	var grade1File = grade1Files[0];
+	var grade2File = grade2Files[0];
+	var grade3File = grade3Files[0];
 
 	var reader = new FileReader();
 	
@@ -183,7 +183,9 @@ function readBlob(callback) {
 }
 
 document.getElementById("button").addEventListener('click', function(event) {
-	if (event.target.tagName.toLowerCase() == 'button') readBlob(analyze);
+	if (event.target.tagName.toLowerCase() == 'button') {
+		readBlob(analyze);
+	}
 }, false);
 
 document.getElementById("copyArea").addEventListener('click', function() {
@@ -213,10 +215,10 @@ function analyze(guardText, grade1Text, grade2Text, grade3Text)
 	
 	for(lineCounter = 0; lineCounter < 15; lineCounter++)
 	{
-		line = lines[lineCounter];	//
+		line = lines[lineCounter + 2];
 		hours[lineCounter] = new cells();
 		hours[lineCounter].cells = line.split(",");
-//		hours[lineCounter].cells.splice(0, 4);	
+		hours[lineCounter].cells.splice(0, 4);	
 		for(j = 0; j < 6; j++)
 			days[j].cells[lineCounter] = hours[lineCounter].cells[j];
 	}
@@ -273,8 +275,16 @@ function analyze(guardText, grade1Text, grade2Text, grade3Text)
 	}
 	grade3.hanichList = grade3HanichList;
 	
+	
+	error = false;
 	sortHanichs();
 	
+	if(!error) showResults();
+}
+
+
+function showResults()
+{
 	copyText = "";
 	
 	for(y = 0; y < 15; y++)
@@ -312,7 +322,6 @@ function analyze(guardText, grade1Text, grade2Text, grade3Text)
 	
 	setInterval(tableAnimation, 1);
 	setInterval(copyAnimation, 1);
-	
 }
 
 animateI = 0;
@@ -402,7 +411,8 @@ function getGradeHanichs(day, hour)
 		hanichList = grade3.hanichList;
 		break;
 	default:
-		console.error("Error: Missing grade number (at day: " + day + ", hour: " + hour + ")");
+		alert("Error: Missing grade number at " + detranslateDay(day) + ", " + detranslateHour(hour));
+		error = true;
 		break;
 	}
 	
@@ -495,7 +505,7 @@ function removeBusy(hanichs, day, hour)
 			break;
 		}
 	}
-	if(nonBusy.length == 0)	console.error("Error: Wrong placement of grades (at day: " + day + ", hour: " + hour + ")");
+	if(nonBusy.length == 0)	{ alert("Error: Incorrect grade on " + detranslateDay(day) + ", " + detranslateHour(hour)); error = true; }
 	
 	for(k = 0; k < hanichs.length; k++)
 	{
@@ -522,7 +532,44 @@ function translateDay(day)
 	case "tue":	return 2;
 	case "wed":	return 3;
 	case "thu":	return 4;
+	case "fri":	return 5;
 	default:	return 0;
+	}
+}
+
+function detranslateDay(day)
+{
+	switch(day)
+	{
+	case 0:		return "Sunday";
+	case 1:		return "Monday";
+	case 2:		return "Tuesday";
+	case 3:		return "Wednesday";
+	case 4:		return "Thursday";
+	case 5:		return "Friday";
+	default:	return "";
+	}
+}
+
+function detranslateHour(hour)
+{
+	switch(hour)
+	{
+	case 0:		return "00:00-02:00";
+	case 1:		return "02:00-04:00";
+	case 2:		return "04:00-06:00";
+	case 3:		return "06:00-08:00";
+	case 4:		return "08:00-10:00";
+	case 5:		return "10:00-12:00";
+	case 6:		return "12:00-14:00";
+	case 7:		return "14:00-16:00";
+	case 8:		return "16:00-18:00";
+	case 9:		return "18:00-20:00";
+	case 10:	return "20:00-22:00";
+	case 11:	return "22:00-00:00";
+	case 12:	return "כונן יום";
+	case 13:	return "כונן לילה";
+	case 14:	return "קצינת\"ו";
 	}
 }
 
