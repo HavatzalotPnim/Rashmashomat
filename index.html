@@ -293,7 +293,7 @@ function showResults()
 		{
 			cell = document.createElement("td");
 			hanich = Rashmash[x][y];
-			if(hanich != undefined) {
+			if(hanich != null) {
 				cell.innerHTML = hanich.fullName;
 				switch(hanich.grade)
 				{
@@ -356,23 +356,25 @@ function sortHanichs()
 	earlyHours(0);
 	earlyHours(3);
 	
-	for(day = 1; day < 6; day++)
+	for(day = 0; day < 6; day++) {
 		assignHanich(day, 4);
-	
-	for(day = 0; day < 5; day++)
-		for(hour = 5; hour < 13; hour++)
+		for(hour = 5; hour < 15; hour++)
 			assignHanich(day, hour);
-	
-	for(day = 0; day < 4; day++)
-		for(hour = 13; hour < 15; hour++)
-			assignHanich(day, hour);
+	}
 }
 
 
 function setKeeper(hanich, day, hour)
 {
-	hanich.hasKept = true;
-	Rashmash[day][hour] = hanich;
+	if(hanich == null)
+	{
+		Rashmash[day][hour] = null;
+	}
+	else
+	{
+		hanich.hasKept = true;
+		Rashmash[day][hour] = hanich;
+	}
 }
 
 
@@ -387,7 +389,7 @@ function assignHanich(day, hour)
 
 function earlyHours(hour)
 {
-	for(day = 1; day < 6; day++)
+	for(day = 0; day < 6; day++)
 		setKeeper(getMinimumJustice(getGradeHanichs(day, hour)), day, hour);
 }
 
@@ -410,10 +412,6 @@ function getGradeHanichs(day, hour)
 	case 3:
 		hanichList = grade3.hanichList;
 		break;
-	default:
-		alert("Error: Missing grade number at " + detranslateDay(day) + ", " + detranslateHour(hour));
-		error = true;
-		break;
 	}
 	
 	return hanichList;
@@ -422,6 +420,7 @@ function getGradeHanichs(day, hour)
 
 function getMinimumJustice(hanichs)
 {
+	if(hanichs.length == 0) return null;
 	var minimum = hanichs[0].justicePoints;
 	var keeper = hanichs[0];
 
@@ -488,7 +487,7 @@ function removeBusy(hanichs, day, hour)
 	var nonBusy = [];
 	var hanichsLeft = [];
 	
-	if(day == 5 || hour > 9)
+	if(day == 5 || hour > 9 || hanichs.length == 0)
 		return hanichs;
 	else
 	{
