@@ -2,12 +2,16 @@
 <title>רשמ"שומט</title>
 <link rel="icon" href="https://i.imgur.com/wvNWXAH.png">
 <style>
-th { border: 2.5px solid black; text-align: center; width: 200px; height: 39.1px }
-td { border: 2.5px solid black; text-align: center; width: 200px; height: 39.1px }
+th { border: 2.5px solid black; text-align: center }
+td { border: 2.5px solid black; text-align: center }
 tr { background-color: #ffffff }
-table { border: 2.5px solid black; border-collapse: collapse; margin: auto; font-size: 1em; position: relative }
-.timestamp { text-align: center; font-weight: bold }
-#copyArea { float: left; outline: 1.5px solid black; width: 300px; height: 200px; margin-left: 50px; overflow: hidden; position: relative; resize: none }
+#Rashmash { border: 2.5px solid black; border-collapse: collapse; margin-right: 40px; font-size: 0.6em; position: relative; width: 840px; height: 375.36px }
+#Toranut { border: 2.5px solid black; border-collapse: collapse; float: left; margin-left: 40px; font-size: 0.6em; position: relative; width: 840px; height: 375.36px }
+.Rtimestamp { text-align: center; font-weight: bold }
+.Ttimestamp { text-align: center; font-weight: bold; color: #ffffff; background-color: #6aa84f }
+#RcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
+#TcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
+.copyContainer { float: left; margin-left: 50px; position: relative }
 </style>
 </head>
 
@@ -17,12 +21,16 @@ table { border: 2.5px solid black; border-collapse: collapse; margin: auto; font
 <img src="https://i.imgur.com/wvNWXAH.png" style="display: block; margin-left: auto; margin-right: auto; position: relative; bottom: 40px"></img>
 <br>
 <div style="position: relative; bottom: 280px">
-<textarea id="copyArea" readonly style="display: none"></textarea>
+<div id="RcopyAreaContainer" class="copyContainer" style="display: none"><h3 style="text-align: center">רשמ"ש</h3><textarea id="RcopyArea" readonly></textarea></div>
+<div id="TcopyAreaContainer" class="copyContainer" style="display: none"><h3 style="text-align: center">תורנות</h3><textarea id="TcopyArea" readonly></textarea></div>
 הכנס את רשימת השמירות של השבוע הקודם: 
 <input type="file" id="oldRashmash">
 <br>
 הכנס קובץ של מערכת שעות השמירה: 
 <input type="file" id="guardSchedule">
+<br>
+הכנס קובץ של מערכת התורנויות (לא חובה): 
+<input type="file" id="dutySchedule">
 <br><br>
 הכנס קובץ מיפוי שנה א':
 <input type="file" id="grade1Table">
@@ -37,27 +45,37 @@ table { border: 2.5px solid black; border-collapse: collapse; margin: auto; font
 <br>
 <div style="float: left; font-size: 0.8em; position: fixed; bottom: 15px; left: 15px">לשאלות פנו לאיילת רן<br>054-468-4628<br><br>כל הזכויות שמורות לאלון רן</div>
 <table id="Rashmash" border=1 style="display: none">
-<tr id="row0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
-<tr id="row1"><td class="timestamp" style="background-color: #d9d9d9">00:00-02:00</td></tr>
-<tr id="row2"><td class="timestamp">02:00-04:00</td></tr>
-<tr id="row3"><td class="timestamp" style="background-color: #d9d9d9">04:00-06:00</td></tr>
-<tr id="row4"><td class="timestamp">06:00-08:00</td></tr>
-<tr id="row5"><td class="timestamp" style="background-color: #d9d9d9">08:00-10:00</td></tr>
-<tr id="row6"><td class="timestamp">10:00-12:00</td></tr>
-<tr id="row7"><td class="timestamp" style="background-color: #d9d9d9">12:00-14:00</td></tr>
-<tr id="row8"><td class="timestamp">14:00-16:00</td></tr>
-<tr id="row9"><td class="timestamp" style="background-color: #d9d9d9">16:00-18:00</td></tr>
-<tr id="row10"><td class="timestamp">18:00-20:00</td></tr>
-<tr id="row11"><td class="timestamp" style="background-color: #d9d9d9">20:00-22:00</td></tr>
-<tr id="row12"><td class="timestamp">22:00-00:00</td></tr>
-<tr id="row13"><td class="timestamp" style="background-color: #d9d9d9">כונן יום</td></tr>
-<tr id="row14"><td class="timestamp">כונן לילה</td></tr>
-<tr id="row15"><td class="timestamp" style="background-color: #d9d9d9">קצינת"ו</td></tr>
+<tr id="Rrow0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
+<tr id="Rrow1"><td class="Rtimestamp" style="background-color: #d9d9d9">00:00-02:00</td></tr>
+<tr id="Rrow2"><td class="Rtimestamp">02:00-04:00</td></tr>
+<tr id="Rrow3"><td class="Rtimestamp" style="background-color: #d9d9d9">04:00-06:00</td></tr>
+<tr id="Rrow4"><td class="Rtimestamp">06:00-08:00</td></tr>
+<tr id="Rrow5"><td class="Rtimestamp" style="background-color: #d9d9d9">08:00-10:00</td></tr>
+<tr id="Rrow6"><td class="Rtimestamp">10:00-12:00</td></tr>
+<tr id="Rrow7"><td class="Rtimestamp" style="background-color: #d9d9d9">12:00-14:00</td></tr>
+<tr id="Rrow8"><td class="Rtimestamp">14:00-16:00</td></tr>
+<tr id="Rrow9"><td class="Rtimestamp" style="background-color: #d9d9d9">16:00-18:00</td></tr>
+<tr id="Rrow10"><td class="Rtimestamp">18:00-20:00</td></tr>
+<tr id="Rrow11"><td class="Rtimestamp" style="background-color: #d9d9d9">20:00-22:00</td></tr>
+<tr id="Rrow12"><td class="Rtimestamp">22:00-00:00</td></tr>
+<tr id="Rrow13"><td class="Rtimestamp" style="background-color: #d9d9d9">כונן יום</td></tr>
+<tr id="Rrow14"><td class="Rtimestamp">כונן לילה</td></tr>
+<tr id="Rrow15"><td class="Rtimestamp" style="background-color: #d9d9d9">קצינת"ו</td></tr>
+</table>
+
+<table id="Toranut" border=1 style="display: none">
+<tr id="Trow0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
+<tr id="Trow1"><td class="Ttimestamp">משיכת ארוחת בוקר 7:45 בבריטניה</td></tr>
+<tr id="Trow2"><td class="Ttimestamp">משיכת ארוחת ערב 17:45 בבריטניה</td></tr>
+<tr id="Trow3"><td class="Ttimestamp">שטיפת כלים (בימי ראשון ושני שוטפים רק כלי הגשה) <font color="red">וסורקים</font> 23:30 בטרקלין</td></tr>
+<tr id="Trow4"><td class="Ttimestamp">חופיות לטירה (קלקר בלבד) 22:00</td></tr>
+<tr id="Trow5"><td class="Ttimestamp">תורנות טירה</td></tr>
+<tr id="Trow6"><td class="Ttimestamp">מילוי המקרר + הארון בטרקלין 23:00</td></tr>
 </table>
 </div>
 
 <script>
-function Hanich(fullName, grade, department, arabist, kamat, hasKeptNight, hoursUnable, hoursAble, justicePoints)
+function Hanich(fullName, grade, department, arabist, kamat, hasKeptNight, hoursUnable, hoursAble, justicePointsR, justicePointsT)
 {
 	this.fullName = fullName;
 	this.grade = grade;
@@ -65,20 +83,24 @@ function Hanich(fullName, grade, department, arabist, kamat, hasKeptNight, hours
 	this.arabist = arabist;
 	this.kamat = kamat;
 	this.hasKept = false;
+	this.hasServed = false;
 	this.hasKeptNight = hasKeptNight;
 	this.hoursUnable = hoursUnable;
 	this.hoursAble = hoursAble;
-	this.justicePoints = justicePoints;
+	this.justicePointsR = justicePointsR;
+	this.justicePointsT = justicePointsT;
+	this.isKeepingOn = [];
 	
 	this.print = function() {
-		returnValue = "fullName: " + fullName + "\n";
-		returnValue += "grade: " + grade + "\n";
-		returnValue += "department: " + department + "\n";
-		returnValue += "arabist: " + arabist + "\n";
-		returnValue += "kamat: " + kamat + "\n";
-		returnValue += "hoursUnable: " + hoursUnable + "\n";
-		returnValue += "hoursAble: " + hoursAble + "\n";
-		returnValue += "justicePoints: " + justicePoints;
+		returnValue = "Name: " + fullName + "\n";
+		returnValue += "Grade: " + grade + "\n";
+		returnValue += "Department: " + department + "\n";
+		returnValue += "Arabist: " + arabist + "\n";
+		returnValue += "Kamat: " + kamat + "\n";
+		returnValue += "Hours unavailable: " + hoursUnable + "\n";
+		returnValue += "Hours available: " + hoursAble + "\n";
+		returnValue += "Justice points of Rashmash: " + justicePointsR;
+		returnValue += "Justice points of Toranut: " + justicePointsT;
 		
 		return returnValue;
 	}
@@ -128,13 +150,16 @@ grade1 = new grade(gradeWeek1, []);
 
 
 Rashmash = [[],[],[],[],[],[]];
+Toranut = [[],[],[],[],[],[]];
 
+createToranut = false;
 
 
 function readBlob(callback) {
 
 	var oldRashmashFiles = document.getElementById("oldRashmash").files;
 	var guardFiles = document.getElementById("guardSchedule").files;
+	var dutyFiles = document.getElementById("dutySchedule").files;
 	var grade1Files = document.getElementById("grade1Table").files;
 	var grade2Files = document.getElementById("grade2Table").files;
 	var grade3Files = document.getElementById("grade3Table").files;
@@ -146,15 +171,24 @@ function readBlob(callback) {
 	
 	var oldRashmashFile = oldRashmashFiles[0];
 	var guardFile = guardFiles[0];
+	var dutyFile;
 	var grade1File = grade1Files[0];
 	var grade2File = grade2Files[0];
 	var grade3File = grade3Files[0];
-
+	
+	if(dutyFiles.length)
+	{
+		createToranut = true;
+		dutyFile = dutyFiles[0];
+	}
+	
+	
 	var reader = new FileReader();
 	
 	
 	var oldRashmashText;
 	var guardText;
+	var dutyText;
 	var grade1Text;
 	var grade2Text;
 	var grade3Text;
@@ -162,7 +196,6 @@ function readBlob(callback) {
 	
 	var iLoaded = 0;
 
-	// If we use onloadend, we need to check the readyState.
 	reader.onloadend = function(evt) {
 		if (evt.target.readyState == FileReader.DONE) {
 			iLoaded++;
@@ -186,8 +219,12 @@ function readBlob(callback) {
 				break;
 			case 5:
 				grade3Text = evt.target.result;
-				callback(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text);
+				if(createToranut) reader.readAsText(dutyFile);
+				else callback(oldRashmashText, guardText, null, grade1Text, grade2Text, grade3Text);
 				break;
+			case 6:
+				dutyText = evt.target.result;
+				callback(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, grade3Text);
 			}
 		}
 	};
@@ -201,7 +238,12 @@ document.getElementById("button").addEventListener('click', function(event) {
 	}
 }, false);
 
-document.getElementById("copyArea").addEventListener('click', function() {
+document.getElementById("RcopyArea").addEventListener('click', function() {
+	copyArea.select();
+	document.execCommand("copy");
+}, false);
+
+document.getElementById("TcopyArea").addEventListener('click', function() {
 	copyArea.select();
 	document.execCommand("copy");
 }, false);
@@ -217,7 +259,7 @@ function cells()
 	this.cells = [];
 }
 
-function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
+function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, grade3Text)
 {
 	// Guard table
 	
@@ -238,6 +280,8 @@ function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
 			days[j].cells[lineCounter] = hours[lineCounter].cells[j];
 	}
 	
+	
+	
 	// Old Rashmash
 	
 	lines = oldRashmashText.split("\n");
@@ -249,6 +293,32 @@ function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
 		oldKeeps.splice(6, 2);
 		oldNightHours = oldNightHours.concat(oldKeeps);
 	}
+	
+	
+	
+	if(createToranut)
+	{
+		// Duty table
+		
+		dutyText = dutyText.replace(/ג/g, "3").replace(/ב/g, "2").replace(/א/g, "1");
+		
+		dutyDays = [new cells(), new cells(), new cells(), new cells(), new cells(), new cells()];
+		
+		lines = dutyText.split("\n");
+
+		
+		for(lineCounter = 0; lineCounter < 6; lineCounter++)
+		{
+			line = lines[lineCounter + 7];
+			hours[lineCounter] = new cells();
+			hours[lineCounter].cells = line.split(",");
+			hours[lineCounter].cells.splice(0, 4);	
+			for(j = 0; j < 6; j++)
+				dutyDays[j].cells[lineCounter] = hours[lineCounter].cells[j];
+		}
+	}
+	
+	
 	
 	// Grade tables
 	
@@ -263,11 +333,13 @@ function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
 		hasKeptNight = oldNightHours.includes(fullName);
 		hoursUnable = hanichInfo[4].split(" ");
 		hoursAble = hanichInfo[5].split(" ");
-		justicePoints = parseFloat(hanichInfo[6]);
+		justicePointsR = parseFloat(hanichInfo[6]);
+		justicePointsT = parseFloat(hanichInfo[7]);
 		
-		grade1HanichList[i] = new Hanich(fullName, 1, department, arabist, false, hasKeptNight, hoursUnable, hoursAble, justicePoints);
+		grade1HanichList[i] = new Hanich(fullName, 1, department, arabist, false, hasKeptNight, hoursUnable, hoursAble, justicePointsR, justicePointsT);
 	}
 	grade1.hanichList = grade1HanichList;
+	
 	
 	grade2HanichList = [];
 	hanichLineList = grade2Text.split("\n");
@@ -280,11 +352,13 @@ function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
 		hasKeptNight = oldNightHours.includes(fullName);
 		hoursUnable = hanichInfo[4].split(" ");
 		hoursAble = hanichInfo[5].split(" ");
-		justicePoints = parseFloat(hanichInfo[6]);
+		justicePointsR = parseFloat(hanichInfo[6]);
+		justicePointsT = parseFloat(hanichInfo[7]);
 		
-		grade2HanichList[i] = new Hanich(fullName, 2, department, arabist, false, hasKeptNight, hoursUnable, hoursAble, justicePoints);
+		grade2HanichList[i] = new Hanich(fullName, 2, department, arabist, false, hasKeptNight, hoursUnable, hoursAble, justicePointsR, justicePointsT);
 	}
 	grade2.hanichList = grade2HanichList;
+	
 	
 	grade3HanichList = [];
 	hanichLineList = grade3Text.split("\n");
@@ -299,15 +373,18 @@ function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
 		hasKeptNight = oldNightHours.includes(fullName);
 		hoursUnable = hanichInfo[4].split(" ");
 		hoursAble = hanichInfo[5].split(" ");
-		justicePoints = parseFloat(hanichInfo[6]);
+		justicePointsR = parseFloat(hanichInfo[6]);
+		justicePointsT = parseFloat(hanichInfo[7]);
 		
-		grade3HanichList[i] = new Hanich(fullName, 3, department, arabist, kamat, hasKeptNight, hoursUnable, hoursAble, justicePoints);
+		grade3HanichList[i] = new Hanich(fullName, 3, department, arabist, kamat, hasKeptNight, hoursUnable, hoursAble, justicePointsR, justicePointsT);
 	}
 	grade3.hanichList = grade3HanichList;
 	
 	
+	
 	error = false;
-	sortHanichs();
+	sortHanichsR();
+	if(createToranut) sortHanichsT();
 	
 	if(!error) showResults();
 }
@@ -315,7 +392,8 @@ function analyze(oldRashmashText, guardText, grade1Text, grade2Text, grade3Text)
 
 function showResults()
 {
-	copyText = "";
+	RcopyText = "";
+	TcopyText = "";
 	
 	for(y = 0; y < 15; y++)
 	{
@@ -338,18 +416,56 @@ function showResults()
 					color = "#c55a11";
 					break;
 				}
-				copyText += hanich.fullName;
+				RcopyText += hanich.fullName;
 			}
+			else
+				cell.innerHTML = "	";
 			cell.style = "background-color: " + color;
-			row = document.getElementById("row" + (y + 1));
+			row = document.getElementById("Rrow" + (y + 1));
 			row.appendChild(cell);
 			
-			if(x != 5)	copyText += "	";
+			if(x != 5)	RcopyText += "	";
 		}
-		if(y != 14)	copyText += "&#13;&#10;";
+		if(y != 14)	RcopyText += "&#13;&#10;";
 	}
+	document.getElementById("RcopyArea").innerHTML = RcopyText;
 	
-	document.getElementById("copyArea").innerHTML = copyText;
+	if(createToranut) {
+		for(y = 0; y < 6; y++)
+		{
+			for(x = 0; x < 6; x++)
+			{
+				cell = document.createElement("td");
+				hanichs = Toranut[x][y];
+				color = "#ffffff";
+				if(hanichs != null) {
+					cell.innerHTML = (hanichs.length == 1) ? hanichs[0].fullName : hanichs[0].fullName + " ו" + hanichs[1].fullName;
+					switch(hanichs[0].grade)
+					{
+					case 1:
+						color = "#ffff99";
+						break;
+					case 2:
+						color = "#8eaadb";
+						break;
+					case 3:
+						color = "#c55a11";
+						break;
+					}
+					TcopyText += (hanichs.length == 1) ? hanichs[0].fullName : hanichs[0].fullName + " ו" + hanichs[1].fullName;
+				}
+				else
+					cell.innerHTML = "	";
+				cell.style = "background-color: " + color;
+				row = document.getElementById("Trow" + (y + 1));
+				row.appendChild(cell);
+				
+				if(x != 5)	TcopyText += "	";
+			}
+			if(y != 14)	TcopyText += "&#13;&#10;";
+		}
+		document.getElementById("TcopyArea").innerHTML = TcopyText;
+	}
 	
 	setInterval(tableAnimation, 1);
 	setInterval(copyAnimation, 1);
@@ -364,8 +480,8 @@ function tableAnimation()
 	if(animateProg > 1) animateProg = 1;
 	animate = (650 - (animateProg * animateProg * (3 - 2 * animateProg)) * 650);
 	
-	Rashmash = document.getElementById("Rashmash");
-	Rashmash.style = "top: " + animate + "px";
+	document.getElementById("Rashmash").style = "top: " + (animate + 20) + "px";
+	if(createToranut)	document.getElementById("Toranut").style = "top: " + (animate - 355.36) + "px";
 }
 
 function copyAnimation()
@@ -374,13 +490,13 @@ function copyAnimation()
 	if(animateProg > 1) animateProg = 1;
 	animate = (300 - (animateProg * animateProg * (3 - 2 * animateProg)) * 300) + 50;
 	
-	copy = document.getElementById("copyArea");
-	copy.style = "bottom: " + animate + "px";
+	document.getElementById("RcopyAreaContainer").style = "bottom: " + animate + "px";
+	if(createToranut)	document.getElementById("TcopyAreaContainer").style = "bottom: " + animate + "px";
 }
 
 
 
-function sortHanichs()
+function sortHanichsR()
 {
 	earlyHours(1);
 	earlyHours(2);
@@ -388,40 +504,77 @@ function sortHanichs()
 	earlyHours(3);
 	
 	for(day = 0; day < 6; day++) {
-		assignHanich(day, 4);
+		assignHanichR(day, 4);
 		for(hour = 5; hour < 15; hour++)
-			assignHanich(day, hour);
+			assignHanichR(day, hour);
+	}
+}
+
+function sortHanichsT()
+{
+	for(day = 0; day < 6; day++) {
+		assignHanichT(day, 3, 0);
+		assignHanichT(day, 8, 1);
+		assignHanichT(day, 11, 2);
+		assignHanichT(day, 11, 3);
+		assignHanichT(day, -1, 4);
+		assignHanichT(day, 11, 5);
 	}
 }
 
 
 function setKeeper(hanich, day, hour)
 {
-	if(hanich == null)
-	{
-		Rashmash[day][hour] = null;
-	}
-	else
+	Rashmash[day][hour] = hanich;
+	if(hanich != null)
 	{
 		hanich.hasKept = true;
-		Rashmash[day][hour] = hanich;
+		hanich.isKeepingOn[day] = hour;
+	}
+}
+
+function setServers(hanichs, day, index)
+{
+	Toranut[day][index] = hanichs;
+	if(hanichs != null) {
+		for(o = 0; o < hanichs.length; o++)
+			hanichs[o].hasServed = true;
 	}
 }
 
 
 
-function assignHanich(day, hour)
+function assignHanichR(day, hour)
 {
-	hanichList = getGradeHanichs(day, hour);
+	hanichList = getGradeHanichsR(day, hour);
 	hanichList = removeUnable(hanichList, day, hour);
 	hanichList = removeBusy(hanichList, day, hour);
-	setKeeper(getMinimumJustice(hanichList), day, hour);
+	setKeeper(getMinimumJusticeR(hanichList), day, hour);
 }
+
+function assignHanichT(day, hour, index)
+{
+	hanichList = getGradeHanichsT(day, index);
+	if(hour != -1) {
+		hanichList = removeUnable(hanichList, day, hour);
+		hanichList = removeBusy(hanichList, day, hour);
+		newHanichList = [];
+		for(i = 0; i < hanichList.length; i++)
+		{
+			hanich = hanichList[i];
+			if((!hanich.hasKept || hanich.isKeepingOn[day] != hour) && !hanich.hasServed)	newHanichList.push(hanich);
+		}
+		hanichList = newHanichList;
+	}
+	setServers(getMinimumJusticeT(hanichList, (index <= 3) ? 2 : 1), day, index);
+}
+
+
 
 function earlyHours(hour)
 {
 	for(day = 0; day < 6; day++) {
-		gradeHanichs = getGradeHanichs(day, hour);
+		gradeHanichs = getGradeHanichsR(day, hour);
 		newGradeHanichs = [];
 		for(i = 0; i < gradeHanichs.length; i++)
 		{
@@ -430,14 +583,14 @@ function earlyHours(hour)
 				newGradeHanichs.push(hanich);
 		}
 			
-		selected = getMinimumJustice(newGradeHanichs);
+		selected = getMinimumJusticeR(newGradeHanichs);
 		setKeeper(selected, day, hour);
 	}
 }
 
 
 
-function getGradeHanichs(day, hour)
+function getGradeHanichsR(day, hour)
 {
 	gradeNumber = days[day].cells[hour];
 	
@@ -459,16 +612,38 @@ function getGradeHanichs(day, hour)
 	return hanichList;
 }
 
+function getGradeHanichsT(day, hour)
+{
+	gradeNumber = dutyDays[day].cells[hour];
+	
+	var hanichList = [];
+	
+	switch(parseInt(gradeNumber))
+	{
+	case 1:
+		hanichList = grade1.hanichList;
+		break;
+	case 2:
+		hanichList = grade2.hanichList;
+		break;
+	case 3:
+		hanichList = grade3.hanichList;
+		break;
+	}
+	
+	return hanichList;
+}
 
-function getMinimumJustice(hanichs)
+
+function getMinimumJusticeR(hanichs)
 {
 	if(hanichs.length == 0) return null;
-	var minimum = hanichs[0].justicePoints;
+	var minimum = hanichs[0].justicePointsR;
 	var keeper = hanichs[0];
 
 	for(i = 0; i < hanichs.length; i++)
 	{
-		minimum = hanichs[i].justicePoints;
+		minimum = hanichs[i].justicePointsR;
 		keeper = hanichs[i];
 		
 		if(!hanichs[i].hasKept)
@@ -477,14 +652,47 @@ function getMinimumJustice(hanichs)
 
 	for(i = 0; i < hanichs.length; i++)
 	{
-		if(hanichs[i].justicePoints < minimum && !hanichs[i].hasKept)
+		if(hanichs[i].justicePointsR < minimum && !hanichs[i].hasKept)
 		{
-			minimum = hanichs[i].justicePoints;
+			minimum = hanichs[i].justicePointsR;
 			keeper = hanichs[i];
 		}
 	}
 
 	return keeper;
+}
+
+
+function getMinimumJusticeT(hanichs, number)
+{
+	if(hanichs.length == 0) return null;
+	var minimum = hanichs[0].justicePointsT;
+	var servers = [hanichs[0]];
+	
+	for(f = 0; f < number; f++)
+	{
+		for(i = 0; i < hanichs.length; i++)
+		{
+			minimum = hanichs[i].justicePointsT;
+			servers[f] = hanichs[i];
+			
+			if(!hanichs[i].hasServed)
+				break;
+		}
+
+		for(i = 0; i < hanichs.length; i++)
+		{
+			if(hanichs[i].justicePointsT < minimum && !hanichs[i].hasServed)
+			{
+				minimum = hanichs[i].justicePointsT;
+				servers[f] = hanichs[i];
+			}
+		}
+		
+		servers[f].hasServed = true;
+	}
+	
+	return servers;
 }
 
 
@@ -529,7 +737,7 @@ function removeBusy(hanichs, day, hour)
 	var nonBusy = [];
 	var hanichsLeft = [];
 	
-	if(day == 5 || hour > 9 || hanichs.length == 0)
+	if(day == 5 || hour > 9 || hour < 4 || hanichs.length == 0)
 		return hanichs;
 	else
 	{
@@ -546,17 +754,14 @@ function removeBusy(hanichs, day, hour)
 			break;
 		}
 	}
+	console.log(hanichs[0].grade);
 	if(nonBusy.length == 0)	{ alert("Error: Incorrect grade on " + detranslateDay(day) + ", " + detranslateHour(hour)); error = true; }
 	
 	for(k = 0; k < hanichs.length; k++)
 	{
 		hanich = hanichs[k];
-		for(j = 0; j < nonBusy.length; j++)
-		{
-			department = nonBusy[j];
-			if(hanich.department == department || (hanich.arabist && department == "arab") || (hanich.kamat && department == "kamat") || checkIfAble(hanich, day, hour))
-				hanichsLeft.push(hanich);
-		}
+		if(nonBusy.includes(hanich.department) || (hanich.arabist && nonBusy.includes("arab")) || (hanich.kamat && nonBusy.includes("kamat")) || checkIfAble(hanich, day, hour))
+			hanichsLeft.push(hanich);
 	}
 	
 	return hanichsLeft;
