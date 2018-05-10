@@ -327,7 +327,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	for(i = 0; i < hanichLineList.length; i++)
 	{
 		hanichInfo = hanichLineList[i].split(",");
-		if(hanichInfo.length) {
+		if(hanichInfo.length > 0) {
 			fullName = hanichInfo[0];
 			department = hanichInfo[1];
 			arabist = (hanichInfo[2] == 1);
@@ -348,7 +348,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	for(i = 0; i < hanichLineList.length; i++)
 	{
 		hanichInfo = hanichLineList[i].split(",");
-		if(hanichInfo.length) {
+		if(hanichInfo.length > 0) {
 			fullName = hanichInfo[0];
 			department = hanichInfo[1];
 			arabist = (hanichInfo[2] == 1);
@@ -370,7 +370,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	for(i = 0; i < hanichLineList.length; i++)
 	{
 		hanichInfo = hanichLineList[i].split(",");
-		if(hanichInfo.length) {
+		if(hanichInfo.length > 0) {
 			fullName = hanichInfo[0];
 			department = hanichInfo[1];
 			arabist = (hanichInfo[2] == 1);
