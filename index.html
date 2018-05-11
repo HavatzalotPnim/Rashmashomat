@@ -259,6 +259,9 @@ function cells()
 	this.cells = [];
 }
 
+
+sortingToranut = false;
+
 function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, grade3Text)
 {
 	// Guard table
@@ -390,7 +393,11 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	
 	error = false;
 	sortHanichsR();
-	if(createToranut) sortHanichsT();
+	if(createToranut)
+	{
+		sortingToranut = true;
+		sortHanichsT();
+	}
 	
 	if(!error) showResults();
 }
@@ -760,8 +767,7 @@ function removeBusy(hanichs, day, hour)
 			break;
 		}
 	}
-	console.log(hanichs[0].grade);
-	if(nonBusy.length == 0)	{ alert("Error: Incorrect grade on " + detranslateDay(day) + ", " + detranslateHour(hour)); error = true; }
+	if(nonBusy.length == 0)	{ alert("Error: Incorrect grade on " + detranslateDay(day) + ", " + detranslateHour(hour) + ", for " + (sortingToranut) ? "Toranut" : "Rashmash"); error = true; }
 	
 	for(k = 0; k < hanichs.length; k++)
 	{
