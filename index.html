@@ -12,6 +12,9 @@ tr { background-color: #ffffff }
 #RcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
 #TcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
 .copyContainer { float: left; margin-left: 50px; position: relative }
+
+.hanichText { cursor: pointer }
+.hanichText:hover { text-decoration: line-through }
 </style>
 </head>
 
@@ -66,11 +69,12 @@ tr { background-color: #ffffff }
 <table id="Toranut" border=1 style="display: none">
 <tr id="Trow0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
 <tr id="Trow1"><td class="Ttimestamp">משיכת ארוחת בוקר 7:45 בבריטניה</td></tr>
-<tr id="Trow2"><td class="Ttimestamp">משיכת ארוחת ערב 17:45 בבריטניה</td></tr>
-<tr id="Trow3"><td class="Ttimestamp">שטיפת כלים (בימי ראשון ושני שוטפים רק כלי הגשה) <font color="red">וסורקים</font> 23:30 בטרקלין</td></tr>
-<tr id="Trow4"><td class="Ttimestamp">חופיות לטירה (קלקר בלבד) 22:00</td></tr>
-<tr id="Trow5"><td class="Ttimestamp">תורנות טירה</td></tr>
-<tr id="Trow6"><td class="Ttimestamp">מילוי המקרר + הארון בטרקלין 23:00</td></tr>
+<tr id="Trow2"><td class="Ttimestamp">תורנות החזרת כלים לאפי (יום שלישי עד שעה 12:00)</td></tr>
+<tr id="Trow3"><td class="Ttimestamp">משיכת ארוחת ערב 17:45 בבריטניה</td></tr>
+<tr id="Trow4"><td class="Ttimestamp">שטיפת כלים  <font color="red">וסורקים</font> 23:30 בטרקלין</td></tr>
+<tr id="Trow5"><td class="Ttimestamp">חופיות לטירה (קלקר בלבד) 22:00</td></tr>
+<tr id="Trow6"><td class="Ttimestamp">תורנות טירה</td></tr>
+<tr id="Trow7"><td class="Ttimestamp">מילוי המקרר + הארון בטרקלין 23:00</td></tr>
 </table>
 </div>
 
@@ -120,7 +124,7 @@ var gradeWeek3 = new gradeWeek(
 );
 var gradeWeek2 = new gradeWeek(
 	[[], [], ["arab"], ["comp", "econ"], [], []],
-	[[], [], ["math", "econ"], [], ["philo"], ["philo"]],
+	[[], [], ["math", "econ"], [], ["philo"], ["philo", "comp"]],
 	[[], [], [], ["math", "philo", "comp"], ["math", "philo", "comp"], []],
 	[[], ["econ"], ["philo"], ["econ", "comp"], ["comp"], ["philo", "math", "comp", "econ"]],
 	[["math", "econ", "comp"], ["econ"], ["math", "philo", "comp"], ["comp", "philo", "econ"], [], []]
@@ -154,6 +158,12 @@ Toranut = [[],[],[],[],[],[]];
 
 createToranut = false;
 
+var oldRashmashText;
+var guardText;
+var dutyText;
+var grade1Text;
+var grade2Text;
+var grade3Text;
 
 function readBlob(callback) {
 
@@ -184,14 +194,6 @@ function readBlob(callback) {
 	
 	
 	var reader = new FileReader();
-	
-	
-	var oldRashmashText;
-	var guardText;
-	var dutyText;
-	var grade1Text;
-	var grade2Text;
-	var grade3Text;
 	
 	
 	var iLoaded = 0;
@@ -238,13 +240,13 @@ document.getElementById("button").addEventListener('click', function(event) {
 	}
 }, false);
 
-document.getElementById("RcopyArea").addEventListener('click', function() {
-	copyArea.select();
+document.getElementById("RcopyArea").addEventListener("click", function() {
+	this.select();
 	document.execCommand("copy");
 }, false);
 
-document.getElementById("TcopyArea").addEventListener('click', function() {
-	copyArea.select();
+document.getElementById("TcopyArea").addEventListener("click", function() {
+	this.select();
 	document.execCommand("copy");
 }, false);
 
@@ -262,8 +264,15 @@ function cells()
 
 sortingToranut = false;
 
+grade1HanichList = [];
+grade2HanichList = [];
+grade3HanichList = [];
+
+disabledTimeslots = [];
+
 function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, grade3Text)
 {
+	disabledTimeslots = [];
 	// Guard table
 	
 	guardText = guardText.replace(/ג/g, "3").replace(/ב/g, "2").replace(/א/g, "1");
@@ -310,7 +319,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 		lines = dutyText.split("\n");
 
 		
-		for(lineCounter = 0; lineCounter < 6; lineCounter++)
+		for(lineCounter = 0; lineCounter < 7; lineCounter++)
 		{
 			line = lines[lineCounter + 7];
 			hours[lineCounter] = new cells();
@@ -391,7 +400,31 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	
 	
 	
+	startSorting();
+}
+
+function resetHanich(hanich)
+{
+	hanich.hasKept = false;
+	hanich.hasServed = false;
+	hanich.hasKeptNight = false;
+	hanich.isKeepingOn = [];
+}
+
+function startSorting()
+{
+	for(i = 0; i < grade1.hanichList.length; i++)
+		resetHanich(grade1.hanichList[i]);
+	
+	for(i = 0; i < grade2.hanichList.length; i++)
+		resetHanich(grade2.hanichList[i]);
+	
+	for(i = 0; i < grade3.hanichList.length; i++)
+		resetHanich(grade3.hanichList[i]);
+	
+	
 	error = false;
+	sortingToranut = false;
 	sortHanichsR();
 	if(createToranut)
 	{
@@ -403,8 +436,19 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 }
 
 
+hanichCells = [];
+
+var interval;
+
 function showResults()
 {
+	for(i = 0; i < hanichCells.length; i++)
+	{
+		cell = hanichCells[i];
+		cell.parentNode.removeChild(cell);
+	}
+	hanichCells = [];
+	
 	RcopyText = "";
 	TcopyText = "";
 	
@@ -413,10 +457,20 @@ function showResults()
 		for(x = 0; x < 6; x++)
 		{
 			cell = document.createElement("td");
+			hanichCells.push(cell);
 			hanich = Rashmash[x][y];
 			color = "#ffffff";
 			if(hanich != null) {
-				cell.innerHTML = hanich.fullName;
+				hanichName = document.createElement("span");
+				hanichName.innerHTML = hanich.fullName;
+				hanichName.className = "hanichText";
+				hanichName.hanich = hanich;
+				hanichName.day = x;
+				hanichName.index = y;
+				hanichName.toranut = false;
+				hanichName.addEventListener("click", disableTimeslot);
+				cell.appendChild(hanichName);
+				
 				switch(hanich.grade)
 				{
 				case 1:
@@ -444,15 +498,38 @@ function showResults()
 	document.getElementById("RcopyArea").innerHTML = RcopyText;
 	
 	if(createToranut) {
-		for(y = 0; y < 6; y++)
+		for(y = 0; y < 7; y++)
 		{
 			for(x = 0; x < 6; x++)
 			{
 				cell = document.createElement("td");
+				hanichCells.push(cell);
 				hanichs = Toranut[x][y];
 				color = "#ffffff";
 				if(hanichs != null) {
-					cell.innerHTML = (hanichs.length == 1) ? hanichs[0].fullName : hanichs[0].fullName + " ו" + hanichs[1].fullName;
+					firstHanich = document.createElement("span");
+					firstHanich.innerHTML = hanichs[0].fullName;
+					firstHanich.className = "hanichText";
+					firstHanich.hanich = hanichs[0];
+					firstHanich.day = x;
+					firstHanich.index = y;
+					firstHanich.toranut = true;
+					firstHanich.addEventListener("click", disableTimeslot);
+					cell.appendChild(firstHanich);
+					if(hanichs.length != 1)
+					{
+						cell.appendChild(document.createTextNode(" ו"));
+						secondHanich = document.createElement("span");
+						secondHanich.innerHTML = hanichs[1].fullName;
+						secondHanich.className = "hanichText";
+						secondHanich.hanich = hanichs[1];
+						secondHanich.day = x;
+						secondHanich.index = y;
+						secondHanich.toranut = true;
+						secondHanich.addEventListener("click", disableTimeslot);
+						cell.appendChild(secondHanich);
+					}
+					
 					switch(hanichs[0].grade)
 					{
 					case 1:
@@ -480,32 +557,76 @@ function showResults()
 		document.getElementById("TcopyArea").innerHTML = TcopyText;
 	}
 	
-	setInterval(tableAnimation, 1);
-	setInterval(copyAnimation, 1);
+	clearInterval(interval);
+	interval = setInterval(rTableAnimation, 1);
 }
 
-animateI = 0;
+rAnimateI = 0;
+tAnimateI = 0;
 
-function tableAnimation()
+function rTableAnimation()
 {
-	animateI++;
-	animateProg = animateI / 150;
-	if(animateProg > 1) animateProg = 1;
-	animate = (650 - (animateProg * animateProg * (3 - 2 * animateProg)) * 650);
+	rAnimateI++;
+	rAnimateProg = rAnimateI / 150;
+	if(rAnimateProg > 1) rAnimateProg = 1;
+	rAnimate = (650 - (rAnimateProg * rAnimateProg * (3 - 2 * rAnimateProg)) * 650);
 	
-	document.getElementById("Rashmash").style = "top: " + (animate + 20) + "px";
-	if(createToranut)	document.getElementById("Toranut").style = "top: " + (animate - 355.36) + "px";
+	document.getElementById("Rashmash").style = "top: " + (rAnimate + 20) + "px";
+	rCopyAnimation();
+	if(createToranut)	tTableAnimation();
 }
 
-function copyAnimation()
+function tTableAnimation()
 {
-	animateProg = animateI / 100;
-	if(animateProg > 1) animateProg = 1;
-	animate = (300 - (animateProg * animateProg * (3 - 2 * animateProg)) * 300) + 50;
-	
-	document.getElementById("RcopyAreaContainer").style = "bottom: " + animate + "px";
-	if(createToranut)	document.getElementById("TcopyAreaContainer").style = "bottom: " + animate + "px";
+	tAnimateI++;
+	tAnimateProg = tAnimateI / 150;
+	if(tAnimateProg > 1) tAnimateProg = 1;
+	tAnimate = (650 - (tAnimateProg * tAnimateProg * (3 - 2 * tAnimateProg)) * 650);
+	document.getElementById("Toranut").style = "top: " + (tAnimate - 355.36) + "px";
+	tCopyAnimation();
 }
+
+function rCopyAnimation()
+{
+	rAnimateProg = rAnimateI / 100;
+	if(rAnimateProg > 1) rAnimateProg = 1;
+	rAnimate = (300 - (rAnimateProg * rAnimateProg * (3 - 2 * rAnimateProg)) * 300) + 50;
+	
+	document.getElementById("RcopyAreaContainer").style = "bottom: " + rAnimate + "px";
+	if(createToranut)	document.getElementById("TcopyAreaContainer").style = "bottom: " + rAnimate + "px";
+}
+
+function tCopyAnimation()
+{
+	tAnimateProg = tAnimateI / 100;
+	if(tAnimateProg > 1) tAnimateProg = 1;
+	tAnimate = (300 - (tAnimateProg * tAnimateProg * (3 - 2 * tAnimateProg)) * 300) + 50;
+	
+	document.getElementById("TcopyAreaContainer").style = "bottom: " + tAnimate + "px";
+}
+
+
+
+
+
+
+
+function timeslot(hanichName, day, index, toranut)
+{
+	this.hanichName = hanichName;
+	this.day = day;
+	this.index = index;
+	this.toranut = toranut;
+}
+
+
+function disableTimeslot()
+{
+	disabledTimeslots.push(new timeslot(this.hanich.fullName, this.day, this.index, this.toranut));
+	startSorting();
+}
+
+
 
 
 
@@ -527,11 +648,14 @@ function sortHanichsT()
 {
 	for(day = 0; day < 6; day++) {
 		assignHanichT(day, 3, 0);
-		assignHanichT(day, 8, 1);
-		assignHanichT(day, 11, 2);
+		
+		assignHanichT(day, 5, 1)
+		
+		assignHanichT(day, 8, 2);
 		assignHanichT(day, 11, 3);
-		assignHanichT(day, -1, 4);
-		assignHanichT(day, 11, 5);
+		assignHanichT(day, 11, 4);
+		assignHanichT(day, -1, 5);
+		assignHanichT(day, 11, 6);
 	}
 }
 
@@ -560,7 +684,7 @@ function setServers(hanichs, day, index)
 function assignHanichR(day, hour)
 {
 	hanichList = getGradeHanichsR(day, hour);
-	hanichList = removeUnable(hanichList, day, hour);
+	hanichList = removeUnable(hanichList, day, hour, false, hour);
 	hanichList = removeBusy(hanichList, day, hour);
 	setKeeper(getMinimumJusticeR(hanichList), day, hour);
 }
@@ -569,8 +693,9 @@ function assignHanichT(day, hour, index)
 {
 	hanichList = getGradeHanichsT(day, index);
 	if(hour != -1) {
-		hanichList = removeUnable(hanichList, day, hour);
+		hanichList = removeUnable(hanichList, day, hour, true, index);
 		hanichList = removeBusy(hanichList, day, hour);
+		if(index == 1)	hanichList = removeNotBusy(hanichList, day, hour + 1);
 		newHanichList = [];
 		for(i = 0; i < hanichList.length; i++)
 		{
@@ -579,7 +704,7 @@ function assignHanichT(day, hour, index)
 		}
 		hanichList = newHanichList;
 	}
-	setServers(getMinimumJusticeT(hanichList, (index <= 3) ? 2 : 1), day, index);
+	setServers(getMinimumJusticeT(hanichList, (index <= 4) ? 2 : 1), day, index);
 }
 
 
@@ -709,7 +834,7 @@ function getMinimumJusticeT(hanichs, number)
 }
 
 
-function removeUnable(hanichs, day, hour)
+function removeUnable(hanichs, day, hour, toranut, index)
 {
 	var hanichsLeft = [];
 	for(i = 0; i < hanichs.length; i++)
@@ -724,6 +849,13 @@ function removeUnable(hanichs, day, hour)
 			hourUnable = parseInt(unable.substring(3,5)) / 2;
 			if(dayUnable == day && hourUnable == hour) { remove = true; break; }
 		}
+		
+		for(j = 0; j < disabledTimeslots.length; j++)
+		{
+			disabledTimeslot = disabledTimeslots[j];
+			if(disabledTimeslot.day == day && disabledTimeslot.index == index && disabledTimeslot.toranut == toranut && disabledTimeslot.hanichName == hanich.fullName) { remove = true; break; }
+		}
+		
 		if(!remove) hanichsLeft.push(hanich);
 	}
 	return hanichsLeft;
@@ -779,6 +911,42 @@ function removeBusy(hanichs, day, hour)
 	return hanichsLeft;
 	
 }
+
+
+function removeNotBusy(hanichs, day, hour)
+{
+	var nonBusy = [];
+	var hanichsLeft = [];
+	
+	if(day == 5 || hour > 9 || hour < 4 || hanichs.length == 0)
+		return hanichs;
+	else
+	{
+		switch(hanichs[0].grade)
+		{
+		case 1:
+			nonBusy = gradeWeek1.schedules[day][hour - 4];
+			break;
+		case 2:
+			nonBusy = gradeWeek2.schedules[day][hour - 4];
+			break;
+		case 3:
+			nonBusy = gradeWeek3.schedules[day][hour - 4];
+			break;
+		}
+	}
+	
+	for(k = 0; k < hanichs.length; k++)
+	{
+		hanich = hanichs[k];
+		if(!(nonBusy.includes(hanich.department) || (hanich.arabist && nonBusy.includes("arab")) || (hanich.kamat && nonBusy.includes("kamat")) || checkIfAble(hanich, day, hour)))
+			hanichsLeft.push(hanich);
+	}
+	
+	return hanichsLeft;
+	
+}
+
 
 
 function translateDay(day)
