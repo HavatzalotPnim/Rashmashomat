@@ -1,0 +1,13 @@
+th { border: 2.5px solid black; text-align: center }
+td { border: 2.5px solid black; text-align: center }
+tr { background-color: #ffffff }
+#Rashmash { border: 2.5px solid black; border-collapse: collapse; margin-right: 40px; font-size: 0.6em; position: relative; width: 840px; height: 375.36px; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none }
+#Toranut { border: 2.5px solid black; border-collapse: collapse; float: left; margin-left: 40px; font-size: 0.6em; position: relative; width: 840px; height: 375.36px }
+.Rtimestamp { text-align: center; font-weight: bold }
+.Ttimestamp { text-align: center; font-weight: bold; color: #ffffff; background-color: #6aa84f }
+#RcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
+#TcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
+.copyContainer { float: left; margin-left: 50px; position: relative; width: 300px }
+
+.hanichText { cursor: pointer }
+.hanichText:hover { text-decoration: line-through }
