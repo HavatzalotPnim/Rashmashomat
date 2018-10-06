@@ -36,11 +36,25 @@ function grade(week, hanichList)
 {
 	this.week = week;
 	this.hanichList = hanichList;
+	this.allKept = function()
+	{
+		for(let i = 0; i < this.hanichList.length; i++)
+			if(!this.hanichList[i].hasKept)	return false;
+		return true;
+	}
+	
+	this.resetKeeping = function()
+	{
+		for(let i = 0; i < this.hanichList.length; i++)
+			this.hanichList[i].hasKept = false;
+	}
 }
 
-var grade3 = new grade(gradeWeek3, []);
-var grade2 = new grade(gradeWeek2, []);
-var grade1 = new grade(gradeWeek1, []);
+var grades = [
+	new grade(gradeWeek3, []),
+	new grade(gradeWeek2, []),
+	new grade(gradeWeek1, [])
+];
 
 
 
@@ -157,11 +171,7 @@ function cells()
 
 sortingToranut = false;
 
-grade1HanichList = [];
-grade2HanichList = [];
-grade3HanichList = [];
-
-disabledTimeslots = [];
+var disabledTimeslots = [];
 
 function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, grade3Text)
 {
@@ -223,7 +233,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	
 	// Grade tables
 	
-	grade1HanichList = [];
+	let grade1HanichList = [];
 	hanichLineList = grade1Text.split("\n");
 	for(i = 0; i < hanichLineList.length; i++)
 	{
@@ -242,10 +252,10 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 			grade1HanichList[i] = new Hanich(fullName, 1, department, arabist, false, hasKeptNight, hasBeenConan, hoursUnable, hoursAble, justicePointsR, justicePointsT);
 		}
 	}
-	grade1.hanichList = grade1HanichList;
+	grades[0].hanichList = grade1HanichList;
 	
 	
-	grade2HanichList = [];
+	let grade2HanichList = [];
 	hanichLineList = grade2Text.split("\n");
 	for(i = 0; i < hanichLineList.length; i++)
 	{
@@ -264,10 +274,10 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 			grade2HanichList[i] = new Hanich(fullName, 2, department, arabist, false, hasKeptNight, hasBeenConan, hoursUnable, hoursAble, justicePointsR, justicePointsT);
 		}
 	}
-	grade2.hanichList = grade2HanichList;
+	grades[1].hanichList = grade2HanichList;
 	
 	
-	grade3HanichList = [];
+	let grade3HanichList = [];
 	hanichLineList = grade3Text.split("\n");
 	hanichLineList.splice(3,1);
 	for(i = 0; i < hanichLineList.length; i++)
@@ -288,7 +298,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 			grade3HanichList[i] = new Hanich(fullName, 3, department, arabist, kamat, hasKeptNight, hasBeenConan, hoursUnable, hoursAble, justicePointsR, justicePointsT);
 		}
 	}
-	grade3.hanichList = grade3HanichList;
+	grades[2].hanichList = grade3HanichList;
 	
 	
 	
@@ -305,14 +315,9 @@ function resetHanich(hanich)
 
 function startSorting()
 {
-	for(i = 0; i < grade1.hanichList.length; i++)
-		resetHanich(grade1.hanichList[i]);
-	
-	for(i = 0; i < grade2.hanichList.length; i++)
-		resetHanich(grade2.hanichList[i]);
-	
-	for(i = 0; i < grade3.hanichList.length; i++)
-		resetHanich(grade3.hanichList[i]);
+	for(let i = 0; i < grades.length; i++)
+		for(let j = 0; j < grades[i].hanichList.length; j++)
+			resetHanich(grades[i].hanichList[j]);
 	
 	
 	error = false;
@@ -336,7 +341,7 @@ function showResults()
 {
 	let needsReset = false;
 	
-	for(i = 0; i < hanichCells.length; i++)
+	for(let i = 0; i < hanichCells.length; i++)
 	{
 		cell = hanichCells[i];
 		cell.parentNode.removeChild(cell);
@@ -576,24 +581,25 @@ function setKeeper(hanich, day, hour)
 	{
 		hanich.hasKept = true;
 		hanich.isKeepingOn[day] = hour;
+		
+		if(grades[hanich.grade-1].allKept())
+			grades[hanich.grade-1].resetKeeping();
 	}
 }
 
 function setServers(hanichs, day, index)
 {
 	Toranut[day][index] = hanichs;
-	if(hanichs != null) {
-		for(o = 0; o < hanichs.length; o++)
-			hanichs[o].hasServed = true;
-	}
+	if(hanichs != null)
+		for(let i = 0; i < hanichs.length; i++)
+			hanichs[i].hasServed = true;
 }
-
 
 
 function assignHanichR(day, hour)
 {
 	hanichList = getGradeHanichsR(day, hour);
-	hanichList = removeUnable(hanichList, day, hour);
+	hanichList = removeUnable(hanichList, day, hour, false);
 	hanichList = removeDisabled(hanichList, day, hour, false);
 	hanichList = removeBusy(hanichList, day, hour);
 	setKeeper(getMinimumJusticeR(hanichList), day, hour);
@@ -603,7 +609,7 @@ function assignHanichT(day, hour, index)
 {
 	hanichList = getGradeHanichsT(day, index);
 	if(hour != -1) {
-		hanichList = removeUnable(hanichList, day, hour);
+		hanichList = removeUnable(hanichList, day, hour, true);
 		hanichList = removeDisabled(hanichList, day, hour, true);
 		hanichList = removeBusy(hanichList, day, hour);
 		if(index == 1)	hanichList = removeNotBusy(hanichList, day, hour + 1);
@@ -629,7 +635,7 @@ function earlyHours(hour)
 		for(i = 0; i < gradeHanichs.length; i++)
 		{
 			hanich = gradeHanichs[i];
-			if(!(hanich.hasKeptNight && (hour >= 1 && hour <= 2)))
+			if(!(hanich.hasKeptNight && (hour >= 1 && hour <= 2)) && !hanich.hasKept)
 				newGradeHanichs.push(hanich);
 		}
 			
@@ -681,46 +687,14 @@ function allDay(type)
 
 function getGradeHanichsR(day, hour)
 {
-	gradeNumber = days[day].cells[hour];
-	
-	var hanichList = [];
-	
-	switch(parseInt(gradeNumber))
-	{
-	case 1:
-		hanichList = grade1.hanichList;
-		break;
-	case 2:
-		hanichList = grade2.hanichList;
-		break;
-	case 3:
-		hanichList = grade3.hanichList;
-		break;
-	}
-	
-	return hanichList;
+	let gradeNumber = days[day].cells[hour];
+	return (gradeNumber > 0) ? (grades[gradeNumber - 1].hanichList) : [];
 }
 
 function getGradeHanichsT(day, hour)
 {
-	gradeNumber = dutyDays[day].cells[hour];
-	
-	var hanichList = [];
-	
-	switch(parseInt(gradeNumber))
-	{
-	case 1:
-		hanichList = grade1.hanichList;
-		break;
-	case 2:
-		hanichList = grade2.hanichList;
-		break;
-	case 3:
-		hanichList = grade3.hanichList;
-		break;
-	}
-	
-	return hanichList;
+	let gradeNumber = dutyDays[day].cells[hour];
+	return (gradeNumber > 0) ? (grades[gradeNumber - 1].hanichList) : [];
 }
 
 
@@ -785,14 +759,14 @@ function getMinimumJusticeT(hanichs, number)
 }
 
 
-function removeUnable(hanichs, day, hour)
+function removeUnable(hanichs, day, hour, toranut)
 {
-	var hanichsLeft = [];
+	let hanichsLeft = [];
 	for(i = 0; i < hanichs.length; i++)
 	{
-		hanich = hanichs[i];
-		unables = hanich.hoursUnable;
-		var remove = false;
+		let hanich = hanichs[i];
+		let unables = hanich.hoursUnable;
+		let remove = false;
 		for(j = 0; j < unables.length; j++)
 		{
 			unable = unables[j];
@@ -801,7 +775,7 @@ function removeUnable(hanichs, day, hour)
 			if(dayUnable == day && hourUnable == hour) { remove = true; break; }
 		}
 		
-		if(!remove) hanichsLeft.push(hanich);
+		if(!remove && !(!toranut && hanich.hasKept) && !(toranut && hanich.hasServed)) hanichsLeft.push(hanich);
 	}
 	return hanichsLeft;
 }
@@ -809,13 +783,13 @@ function removeUnable(hanichs, day, hour)
 
 function removeDisabled(hanichs, day, hour, toranut)
 {
-	var hanichsLeft = [];
-	for(i = 0; i < hanichs.length; i++)
+	let hanichsLeft = [];
+	for(let i = 0; i < hanichs.length; i++)
 	{
-		hanich = hanichs[i];
-		var remove = false;
+		let hanich = hanichs[i];
+		let remove = false;
 		
-		for(j = 0; j < disabledTimeslots.length; j++)
+		for(let j = 0; j < disabledTimeslots.length; j++)
 		{
 			disabledTimeslot = disabledTimeslots[j];
 			if(disabledTimeslot.day == day && disabledTimeslot.index == hour && disabledTimeslot.toranut == toranut && disabledTimeslot.hanichName == hanich.fullName) { remove = true; break; }
@@ -829,13 +803,13 @@ function removeDisabled(hanichs, day, hour, toranut)
 
 function checkIfAble(hanich, day, hour)
 {
-	ables = hanich.hoursAble;
-	isAble = false;
-	for(i = 0; i < ables.length; i++)
+	let ables = hanich.hoursAble;
+	let isAble = false;
+	for(let i = 0; i < ables.length; i++)
 	{
-		able = ables[i];
-		dayAble = translateDay(unable.substring(0, 3));
-		hourAble = parseInt(unable.substring(3,5)) / 2;
+		let able = ables[i];
+		let dayAble = translateDay(unable.substring(0, 3));
+		let hourAble = parseInt(unable.substring(3,5)) / 2;
 		if(dayAble == day && hourAble == hour) { isAble = true; break; }
 	}
 	return isAble;
