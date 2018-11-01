@@ -185,15 +185,17 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	let lines = guardText.split("\n");
 
 	
-	for(lineCounter = 0; lineCounter < 15; lineCounter++)
+	for(let i = 0; i < 15; i++)
 	{
-		let line = lines[lineCounter + 2];
-		hours[lineCounter] = new cells();
-		hours[lineCounter].cells = line.split(",");
-		hours[lineCounter].cells.splice(0, 4);	
-		for(j = 0; j < 6; j++)
-			days[j].cells[lineCounter] = hours[lineCounter].cells[j];
+		let line = lines[i + 2];
+		hours[i] = new cells();
+		hours[i].cells = line.split(",");
+		hours[i].cells.splice(0, 4);	
+		for(let j = 0; j < 6; j++)
+			days[j].cells[i] = hours[i].cells[j];
 	}
+	console.log(hours);
+	console.log(days);
 	
 	
 	
@@ -201,8 +203,8 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	
 	lines = oldRashmashText.split("\n");
 	
-	for(lineCounter = 1; lineCounter <= 2; lineCounter++)
-		oldNightHours = oldNightHours.concat(lines[lineCounter + 2].split(",").slice(4, 10));
+	for(let i = 1; i <= 2; i++)
+		oldNightHours = oldNightHours.concat(lines[i + 2].split(",").slice(4, 10));
 	let wasConan = lines[14].split(",").slice(4,9);
 	
 	
@@ -218,14 +220,14 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 		lines = dutyText.split("\n");
 
 		
-		for(lineCounter = 0; lineCounter < 7; lineCounter++)
+		for(let i = 0; i < 7; i++)
 		{
-			let line = lines[lineCounter + 7];
-			hours[lineCounter] = new cells();
-			hours[lineCounter].cells = line.split(",");
-			hours[lineCounter].cells.splice(0, 4);	
-			for(j = 0; j < 6; j++)
-				dutyDays[j].cells[lineCounter] = hours[lineCounter].cells[j];
+			let line = lines[i + 7];
+			hours[i] = new cells();
+			hours[i].cells = line.split(",");
+			hours[i].cells.splice(0, 4);	
+			for(let j = 0; j < 6; j++)
+				dutyDays[j].cells[i] = hours[i].cells[j];
 		}
 	}
 	
@@ -235,7 +237,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	
 	let grade1HanichList = [];
 	hanichLineList = grade1Text.split("\n");
-	for(i = 0; i < hanichLineList.length; i++)
+	for(let i = 0; i < hanichLineList.length; i++)
 	{
 		hanichInfo = hanichLineList[i].split(",");
 		if(hanichInfo.length > 5) {
@@ -257,7 +259,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	
 	let grade2HanichList = [];
 	hanichLineList = grade2Text.split("\n");
-	for(i = 0; i < hanichLineList.length; i++)
+	for(let i = 0; i < hanichLineList.length; i++)
 	{
 		hanichInfo = hanichLineList[i].split(",");
 		if(hanichInfo.length > 5) {
@@ -280,7 +282,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	let grade3HanichList = [];
 	hanichLineList = grade3Text.split("\n");
 	hanichLineList.splice(3,1);
-	for(i = 0; i < hanichLineList.length; i++)
+	for(let i = 0; i < hanichLineList.length; i++)
 	{
 		hanichInfo = hanichLineList[i].split(",");
 		if(hanichInfo.length > 5) {
@@ -647,7 +649,6 @@ function earlyHours(hour)
 
 function allDay(type)
 {
-	newGradeHanichs = [];
 	switch(type)
 	{
 	case 0:
@@ -656,6 +657,7 @@ function allDay(type)
 			let gradeHanichs = getGradeHanichsR(day, 12);
 			gradeHanichs = removeDisabled(gradeHanichs, day, 12, false);
 			gradeHanichs = removeBusy(gradeHanichs, day, 10);
+			let newGradeHanichs = [];
 			for(i = 0; i < gradeHanichs.length; i++)
 			{
 				hanich = gradeHanichs[i];
@@ -670,10 +672,10 @@ function allDay(type)
 		break;
 	
 	default:
-		for(let day = 0; day < 4; day++)
+		for(let day = 0; day < ((type==1) ? 5 : 4); day++)
 		{
 			let gradeHanichs = getGradeHanichsR(day, 12+type);
-			newGradeHanichs = removeDisabled(gradeHanichs, day, 12+type, false);
+			let newGradeHanichs = removeDisabled(gradeHanichs, day, 12+type, false);
 			
 			let selected = getMinimumJusticeR(newGradeHanichs);
 			
