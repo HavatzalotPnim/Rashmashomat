@@ -158,10 +158,10 @@ document.getElementById("TcopyArea").addEventListener("click", function() {
 }, false);
 
 
-hours = [];
-days = [];
+var hours = [];
+var days = [];
 
-oldNightHours = [];
+var oldNightHours = [];
 
 function cells()
 {
@@ -185,7 +185,7 @@ function analyze(oldRashmashText, guardText, dutyText, grade1Text, grade2Text, g
 	let lines = guardText.split("\n");
 
 	
-	for(let i = 0; i < 15; i++)
+	for(let i = 0; i < 16; i++)
 	{
 		let line = lines[i + 2];
 		hours[i] = new cells();
@@ -335,7 +335,7 @@ function startSorting()
 }
 
 
-hanichCells = [];
+var hanichCells = [];
 
 var interval;
 
@@ -353,7 +353,7 @@ function showResults()
 	RcopyText = "";
 	TcopyText = "";
 	
-	for(y = 0; y < 15; y++)
+	for(y = 0; y < 16; y++)
 	{
 		for(x = 0; x < 6; x++)
 		{
@@ -374,15 +374,15 @@ function showResults()
 				
 				switch(hanich.grade)
 				{
-				case 1:
-					color = "#ffff99";
-					break;
-				case 2:
-					color = "#8eaadb";
-					break;
-				case 3:
-					color = "#c55a11";
-					break;
+				    case 1:
+                        color = "#ea9999";
+					    break;
+				    case 2:
+                        color = "#674ea7";
+					    break;
+				    case 3:
+                        color = "#9fc5e8";
+					    break;
 				}
 				RcopyText += hanich.fullName;
 			}
@@ -475,8 +475,8 @@ function showResults()
 	}
 }
 
-rAnimateI = 0;
-tAnimateI = 0;
+var rAnimateI = 0;
+var tAnimateI = 0;
 
 function rTableAnimation()
 {
@@ -651,37 +651,38 @@ function allDay(type)
 {
 	switch(type)
 	{
-	case 0:
-		for(let day = 0; day < 5; day++)
-		{
-			let gradeHanichs = getGradeHanichsR(day, 12);
-			gradeHanichs = removeDisabled(gradeHanichs, day, 12, false);
-			gradeHanichs = removeBusy(gradeHanichs, day, 10);
-			let newGradeHanichs = [];
-			for(i = 0; i < gradeHanichs.length; i++)
-			{
-				hanich = gradeHanichs[i];
-				if(!hanich.hasBeenConan)
-					newGradeHanichs.push(hanich);
-			}
+	    case 0:
+            for (let j = 12; j < 14; j++)
+		        for(let day = 0; day < 5; day++)
+		        {
+			        let gradeHanichs = getGradeHanichsR(day, j);
+			        gradeHanichs = removeDisabled(gradeHanichs, day, j, false);
+			        gradeHanichs = removeBusy(gradeHanichs, day, 10);
+			        let newGradeHanichs = [];
+			        for(let i = 0; i < gradeHanichs.length; i++)
+			        {
+				        hanich = gradeHanichs[i];
+				        if(!hanich.hasBeenConan)
+					        newGradeHanichs.push(hanich);
+			        }
 			
-			let selected = getMinimumJusticeR(newGradeHanichs);
+			        let selected = getMinimumJusticeR(newGradeHanichs);
 			
-			setKeeper(selected, day, 12);
-		}
-		break;
+			        setKeeper(selected, day, j);
+		        }
+		    break;
 	
-	default:
-		for(let day = 0; day < ((type==1) ? 5 : 4); day++)
-		{
-			let gradeHanichs = getGradeHanichsR(day, 12+type);
-			let newGradeHanichs = removeDisabled(gradeHanichs, day, 12+type, false);
+	    default:
+		    for(let day = 0; day < ((type==1) ? 5 : 4); day++)
+		    {
+			    let gradeHanichs = getGradeHanichsR(day, 13+type);
+			    let newGradeHanichs = removeDisabled(gradeHanichs, day, 13+type, false);
 			
-			let selected = getMinimumJusticeR(newGradeHanichs);
+			    let selected = getMinimumJusticeR(newGradeHanichs);
 			
-			setKeeper(selected, day, 12+type);
-		}
-		break;
+			    setKeeper(selected, day, 13+type);
+		    }
+		    break;
 	}
 }
 
@@ -934,8 +935,9 @@ function detranslateHour(hour)
 	case 9:		return "18:00-20:00";
 	case 10:	return "20:00-22:00";
 	case 11:	return "22:00-00:00";
-	case 12:	return "כונן יום";
-	case 13:	return "כונן לילה";
-	case 14:	return "קצינת\"ו";
+    case 12:    return "כונן יום 1";
+    case 13:    return "כונן יום 2";
+	case 14:	return "כונן לילה";
+	case 15:	return "קצינת\"ו";
 	}
 }
