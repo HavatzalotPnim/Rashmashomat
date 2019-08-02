@@ -1,76 +1,91 @@
 <head>
-<title>רשמ"שומט</title>
-<link rel="icon" href="https://i.imgur.com/wvNWXAH.png">
-<link rel="stylesheet" type="text/css" href="style.css">
+	<title id="title">רשמ"שומט</title>
+	<link rel="icon" href="https://i.imgur.com/wvNWXAH.png">
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body dir="rtl" style="font-size: 1.5em; font-family: arial; background-image: url('background.png')">
-<h1 style="text-align: center">ברוך הבא לרשמ"שומט!</h1>
-<br>
-<img src="https://i.imgur.com/wvNWXAH.png" style="display: block; margin-left: auto; margin-right: auto; position: relative; bottom: 40px"></img>
-<br>
-<div style="position: relative; bottom: 280px">
-<div id="RcopyAreaContainer" class="copyContainer" style="display: none"><h3 style="text-align: center">רשמ"ש</h3><textarea id="RcopyArea" readonly></textarea></div>
-<div id="TcopyAreaContainer" class="copyContainer" style="display: none"><h3 style="text-align: center">תורנות</h3><textarea id="TcopyArea" readonly></textarea></div>
-הכנס קובץ מיפוי שנה א':
-<input type="file" id="grade1Table">
-<br>
-הכנס קובץ מיפוי שנה ב':
-<input type="file" id="grade2Table">
-<br>
-הכנס קובץ מיפוי שנה ג':
-<input type="file" id="grade3Table">
-<br><br>
-הכנס את רשימת השמירות של השבוע הקודם: 
-<input type="file" id="oldRashmash">
-<br>
-הכנס קובץ של מערכת שעות השמירה: 
-<input type="file" id="guardSchedule">
-<br>
-הכנס קובץ של מערכת התורנויות (לא חובה): 
-<input type="file" id="dutySchedule">
-<br>
-<font style="font-size: 0.8em"><br>התחשב בלו"ז אקדמי</font>
-<input type="checkbox" id="checkAcademy" checked>
-<br><br>
+	<h1 style="text-align: center">ברוך הבא ל<span id="titleOmat">רשמ"שומט</span>!</h1>
+	<br>
+	<img src="https://i.imgur.com/wvNWXAH.png" style="display: block; margin-left: auto; margin-right: auto; position: relative; bottom: 40px"></img>
+	<br>
+	<div style="position: relative; bottom: 280px">
+		<div id="copyAreaContainer" style="display: none; bottom: 500px"><h3 style="text-align: center">העתק והדבק ב-Google Sheets</h3><textarea id="copyArea" readonly></textarea></div>
+		הכנס קובץ מיפוי של שנה א':
+		<input type="file" id="grade1Table" onchange="attemptCreation()">
+		<br>
+		הכנס קובץ מיפוי של שנה ב':
+		<input type="file" id="grade2Table" onchange="attemptCreation()">
+		<br>
+		הכנס קובץ מיפוי של שנה ג':
+		<input type="file" id="grade3Table" onchange="attemptCreation()">
+		<br><br>
+		הכנס את רשימת השמירות של השבוע הקודם:
+		<input type="file" id="oldRashmash" onchange="attemptCreation()">
+		<br>
+		הכנס קובץ של מערכת שעות השמירה:
+		<input type="file" id="guardSchedule" onchange="attemptCreation()">
+		<br>
+		<span id="toranutFileInput" style="display: none">
+			הכנס קובץ של מערכת התורנויות:
+			<input type="file" id="dutySchedule" onchange="attemptCreation()">
+		</span>
+		<br>
+		<font style="font-size: 0.8em"><br>התחשב בלו"ז אקדמי</font>
+		<input type="checkbox" id="checkAcademy" checked onchange="startSorting()">
+		<font style="font-size: 0.8em"><br><span id="toranutLink" onclick="toggleToranut()">עבור לשיבוץ תורנות</span></font>
 
 
-<button id="button" style="font-size: 1.2em">אשר</button>
-<br>
-<div style="float: left; font-size: 0.8em; position: fixed; bottom: 15px; left: 15px">לשאלות פנו לאיילת רן<br>054-468-4628<br><br>כל הזכויות שמורות לאלון רן</div>
-    <table id="Rashmash" border=1 style="display: none">
-        <tr id="Rrow0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
-        <tr id="Rrow1"><td class="Rtimestamp" style="background-color: #d9d9d9">00:00-02:00</td></tr>
-        <tr id="Rrow2"><td class="Rtimestamp">02:00-04:00</td></tr>
-        <tr id="Rrow3"><td class="Rtimestamp" style="background-color: #d9d9d9">04:00-06:00</td></tr>
-        <tr id="Rrow4"><td class="Rtimestamp">06:00-08:00</td></tr>
-        <tr id="Rrow5"><td class="Rtimestamp" style="background-color: #d9d9d9">08:00-10:00</td></tr>
-        <tr id="Rrow6"><td class="Rtimestamp">10:00-12:00</td></tr>
-        <tr id="Rrow7"><td class="Rtimestamp" style="background-color: #d9d9d9">12:00-14:00</td></tr>
-        <tr id="Rrow8"><td class="Rtimestamp">14:00-16:00</td></tr>
-        <tr id="Rrow9"><td class="Rtimestamp" style="background-color: #d9d9d9">16:00-18:00</td></tr>
-        <tr id="Rrow10"><td class="Rtimestamp">18:00-20:00</td></tr>
-        <tr id="Rrow11"><td class="Rtimestamp" style="background-color: #d9d9d9">20:00-22:00</td></tr>
-        <tr id="Rrow12"><td class="Rtimestamp">22:00-00:00</td></tr>
-        <tr id="Rrow13"><td class="Rtimestamp" style="background-color: #d9d9d9">כונן יום 1</td></tr>
-        <tr id="Rrow14"><td class="Rtimestamp" style="background-color: #d9d9d9">כונן יום 2</td></tr>
-        <tr id="Rrow15"><td class="Rtimestamp">כונן לילה</td></tr>
-        <tr id="Rrow16"><td class="Rtimestamp" style="background-color: #d9d9d9">קצינת"ו</td></tr>
-    </table>
+		<br><br><br>
 
-    <table id="Toranut" border=1 style="display: none">
-        <tr id="Trow0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
-        <tr id="Trow1"><td class="Ttimestamp">משיכת ארוחת בוקר 7:45 בבריטניה</td></tr>
-        <tr id="Trow2"><td class="Ttimestamp">תורנות החזרת כלים לאפי (יום שלישי עד שעה 12:00)</td></tr>
-        <tr id="Trow3"><td class="Ttimestamp">משיכת ארוחת ערב 17:45 בבריטניה</td></tr>
-        <tr id="Trow4"><td class="Ttimestamp">שטיפת כלים  <font color="red">וסורקים</font> 23:30 בטרקלין</td></tr>
-        <tr id="Trow5"><td class="Ttimestamp">חופיות לטירה (קלקר בלבד) 22:00</td></tr>
-        <tr id="Trow6"><td class="Ttimestamp">תורנות טירה</td></tr>
-        <tr id="Trow7"><td class="Ttimestamp">מילוי המקרר + הארון בטרקלין 23:00</td></tr>
-    </table>
-</div>
+		<table id="Rashmash1" border=1 style="display: none; top: 670px">
+			<tr id="R1row0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
+			<tr id="R1row1"><td class="Rtimestamp gray">00:00-02:00</td></tr>
+			<tr id="R1row2"><td class="Rtimestamp">02:00-04:00</td></tr>
+			<tr id="R1row3"><td class="Rtimestamp gray">04:00-06:00</td></tr>
+			<tr id="R1row4"><td class="Rtimestamp">06:00-08:00</td></tr>
+			<tr id="R1row5"><td class="Rtimestamp gray">08:00-10:00</td></tr>
+			<tr id="R1row6"><td class="Rtimestamp">10:00-12:00</td></tr>
+			<tr id="R1row7"><td class="Rtimestamp gray">12:00-14:00</td></tr>
+			<tr id="R1row8"><td class="Rtimestamp">14:00-16:00</td></tr>
+			<tr id="R1row9"><td class="Rtimestamp gray">16:00-18:00</td></tr>
+			<tr id="R1row10"><td class="Rtimestamp">18:00-20:00</td></tr>
+			<tr id="R1row11"><td class="Rtimestamp gray">20:00-22:00</td></tr>
+			<tr id="R1row12"><td class="Rtimestamp">22:00-00:00</td></tr>
+			<tr id="R1row13"><td class="Rtimestamp gray">כונן יום 1</td></tr>
+			<tr id="R1row14"><td class="Rtimestamp gray">כונן יום 2</td></tr>
+			<tr id="R1row15"><td class="Rtimestamp gray">כונן לילה</td></tr>
+			<tr id="R1row16"><td class="Rtimestamp">קצינת"ו</td></tr>
+		</table>
+		<table id="Rashmash2" border=1 style="display: none; top: 710px">
+			<tr id="R2row0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
+			<tr id="R2row1"><td class="Rtimestamp gray">00:00-08:00</td></tr>
+			<tr id="R2row5"><td class="Rtimestamp gray">08:00-10:00</td></tr>
+			<tr id="R2row6"><td class="Rtimestamp">10:00-12:00</td></tr>
+			<tr id="R2row7"><td class="Rtimestamp gray">12:00-14:00</td></tr>
+			<tr id="R2row8"><td class="Rtimestamp">14:00-16:00</td></tr>
+			<tr id="R2row9"><td class="Rtimestamp gray">16:00-18:00</td></tr>
+			<tr id="R2row10"><td class="Rtimestamp">18:00-20:00</td></tr>
+			<tr id="R2row11"><td class="Rtimestamp gray">20:00-22:00</td></tr>
+			<tr id="R2row12"><td class="Rtimestamp">22:00-00:00</td></tr>
+		</table>
+
+		<table id="Toranut" border=1 style="display: none; top: 670px">
+			<tr id="Trow0"><th></th><th>ראשון</th><th>שני</th><th>שלישי</th><th>רביעי</th><th>חמישי</th><th>שישי</th></tr>
+			<tr id="Trow1"><td class="Ttimestamp">משיכת ארוחת בוקר 7:45 בבריטניה</td></tr>
+			<tr id="Trow2"><td class="Ttimestamp">תורנות החזרת כלים לאפי (יום שלישי עד שעה 12:00)</td></tr>
+			<tr id="Trow3"><td class="Ttimestamp">משיכת ארוחת ערב 17:45 בבריטניה</td></tr>
+			<tr id="Trow4"><td class="Ttimestamp">שטיפת כלים  <font color="red">וסורקים</font> 23:30 בטרקלין</td></tr>
+			<tr id="Trow5"><td class="Ttimestamp">חופיות לטירה (קלקר בלבד) 22:00</td></tr>
+			<tr id="Trow6"><td class="Ttimestamp">תורנות טירה</td></tr>
+			<tr id="Trow7"><td class="Ttimestamp">מילוי המקרר + הארון בטרקלין 23:00</td></tr>
+		</table>
+
+
+		<div style="float: left; font-size: 0.8em; position: fixed; bottom: 15px; left: 15px">לשאלות פנו לאיילת רן<br>054-468-4628<br><br>כל הזכויות שמורות לאלון רן</div>
+	</div>
+
+</body>
 
 <script src="schedule.js"></script>
 <script src="script.js"></script>
-
-</body>

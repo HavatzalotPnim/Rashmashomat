@@ -1,13 +1,78 @@
-th { border: 2.5px solid black; text-align: center }
-td { border: 2.5px solid black; text-align: center }
-tr { background-color: #ffffff }
-#Rashmash { border: 2.5px solid black; border-collapse: collapse; margin-right: 40px; font-size: 0.6em; position: relative; width: 840px; height: 375.36px; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none }
-#Toranut { border: 2.5px solid black; border-collapse: collapse; float: left; margin-left: 40px; font-size: 0.6em; position: relative; width: 840px; height: 375.36px }
-.Rtimestamp { text-align: center; font-weight: bold }
-.Ttimestamp { text-align: center; font-weight: bold; color: #ffffff; background-color: #6aa84f }
-#RcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
-#TcopyArea { outline: 1.5px solid black; width: 300px; height: 200px; overflow: hidden; resize: none }
-.copyContainer { float: left; margin-left: 50px; position: relative; width: 300px }
+th, td {
+	border: 2.5px solid black;
+	text-align: center;
+	width: 10ch;
+	height: 4ch
+}
+tr {
+	background-color: #ffffff
+}
+#Rashmash1, #Rashmash2 {
+	border: 2.5px solid black;
+	border-collapse: collapse;
+	font-size: 0.8em;
+	position: relative;
+	width: 105ch;
+	height: 60ch;
+	margin: auto;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+}
+#Rashmash2 {
+	height: 45ch;
+}
+#Toranut {
+	border: 2.5px solid black;
+	border-collapse: collapse;
+	font-size: 0.8em;
+	position: relative;
+	width: 105ch;
+	height: 30ch;
+	margin: auto;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none
+}
+.Rtimestamp {
+	text-align: center;
+	font-weight: bold
+}
+.Rtimestamp .gray {
+	background-color: #d9d9d9
+}
+.Ttimestamp {
+	text-align: center;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #6aa84f
+}
+#copyArea {
+	outline: 1.5px solid black;
+	width: 300px;
+	height: 200px;
+	overflow: hidden;
+	resize: none
+}
+#copyAreaContainer {
+	float: left;
+	margin-left: 50px;
+	position: relative;
+	width: 300px
+}
 
-.hanichText { cursor: pointer }
-.hanichText:hover { text-decoration: line-through }
+#toranutLink {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.hanichText {
+	cursor: pointer
+}
+.hanichText:hover {
+	text-decoration: line-through
+}
